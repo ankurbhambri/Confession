@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if user.is_authenticated %}
+        <p>owner: {{ user }}</p>
+    {% endif %}
+    {% for post in post_list %}
+        <div class='post'>
+            <h1>
+                <a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a>
+            </h1>
+            {% if users %}
+                <a href="{% url 'post_approval_list' pk=post.pk %}">
+                    Approve
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+            {% endif %}
+            <div class='date'>
+                <p>published: {{ post.published_date }}</p>
+            </div>
+            <p>{{ post.text|linebreaksbr }}</p>
+        <p>{{ post.is_approve }}</p>
+        </div>
+    {% endfor %}
+    {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+{% endif %}
+{% endblock %}
