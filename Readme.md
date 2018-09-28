@@ -1,6 +1,7 @@
 # Multi user Blog Approval Application
 
 There are three type of user how can use this application, Editor, Chief and anonymous. Anonymous can read only those blogs which is approved by chief.
+
     - Editor: Can create and read blogs.
     - Chief: Can read, write, and approve editors blog.
     - Anonymous: Only read approved blogs.
