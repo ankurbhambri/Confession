@@ -14,6 +14,13 @@ import os
 
 from django.contrib.messages import constants as messages
 
+global FLAG
+FLAG = True
+try:
+    from .third_party_settings import *
+except Exception:
+    FLAG = True
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -41,10 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
 
-    'debug_toolbar',
     'crispy_forms',
-    'rest_framework',
-    'rest_framework.authtoken',
 
     'blog',
 ]
@@ -58,49 +62,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-if DEBUG:
-    MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware',]
 
-    DEBUG_TOOLBAR_PANELS = [
-        'debug_toolbar.panels.versions.VersionsPanel',
-        'debug_toolbar.panels.timer.TimerPanel',
-        'debug_toolbar.panels.settings.SettingsPanel',
-        'debug_toolbar.panels.headers.HeadersPanel',
-        'debug_toolbar.panels.request.RequestPanel',
-        'debug_toolbar.panels.sql.SQLPanel',
-        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-        'debug_toolbar.panels.templates.TemplatesPanel',
-        'debug_toolbar.panels.cache.CachePanel',
-        'debug_toolbar.panels.signals.SignalsPanel',
-        'debug_toolbar.panels.logging.LoggingPanel',
-        'debug_toolbar.panels.redirects.RedirectsPanel',
-    ]
-
-    DEBUG_TOOLBAR_CONFIG = {
-        'INTERCEPT_REDIRECTS': False,
-    }
-
-
-    def show_toolbar(request):
-        return True  # Always show toolbar, for example purposes only.
-
-
-    DEBUG_TOOLBAR_CONFIG = {
-        'INTERCEPT_REDIRECTS': False,
-        'SHOW_TOOLBAR_CALLBACK': show_toolbar,
-        # 'EXTRA_SIGNALS': ['myproject.signals.MySignal'],
-        'HIDE_DJANGO_SQL': False,
-    }
-
-    SHOW_TOOLBAR_CALLBACK = True
-
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework.authentication.BasicAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-    )
-}
 
 ROOT_URLCONF = 'multiuser_app.urls'
 
@@ -189,27 +151,40 @@ LOGIN_REDIRECT_URL = 'post_list'
 
 LOGOUT_REDIRECT_URL = 'home'
 
+try:
+    if DEBUG and FLAG:
+        INSTALLED_APPS += installed_apps
+        MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
 
-# Messages built-in framework
+        DEBUG_TOOLBAR_PANELS = [
+            'debug_toolbar.panels.versions.VersionsPanel',
+            'debug_toolbar.panels.timer.TimerPanel',
+            'debug_toolbar.panels.settings.SettingsPanel',
+            'debug_toolbar.panels.headers.HeadersPanel',
+            'debug_toolbar.panels.request.RequestPanel',
+            'debug_toolbar.panels.sql.SQLPanel',
+            'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+            'debug_toolbar.panels.templates.TemplatesPanel',
+            'debug_toolbar.panels.cache.CachePanel',
+            'debug_toolbar.panels.signals.SignalsPanel',
+            'debug_toolbar.panels.logging.LoggingPanel',
+            'debug_toolbar.panels.redirects.RedirectsPanel',
+        ]
 
-MESSAGE_TAGS = {
-    messages.DEBUG: 'alert-secondary',
-    messages.INFO: 'alert-info',
-    messages.SUCCESS: 'alert-success',
-    messages.WARNING: 'alert-warning',
-    messages.ERROR: 'alert-danger',
-}
+        DEBUG_TOOLBAR_CONFIG = {
+            'INTERCEPT_REDIRECTS': False,
+        }
 
+        def show_toolbar(request):
+            return True  # Always show toolbar, for example purposes only.
 
-# Third party apps configuration
+        DEBUG_TOOLBAR_CONFIG = {
+            'INTERCEPT_REDIRECTS': False,
+            'SHOW_TOOLBAR_CALLBACK': show_toolbar,
+            # 'EXTRA_SIGNALS': ['myproject.signals.MySignal'],
+            'HIDE_DJANGO_SQL': False,
+        }
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
-REST_USE_JWT = True
-
-import datetime
-
-JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=1),
-    'JWT_ALLOW_REFRESH': True,
-}
+        SHOW_TOOLBAR_CALLBACK = True
+except Exception:
+    pass

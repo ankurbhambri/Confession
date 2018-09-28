@@ -32,7 +32,7 @@
             <nav class="navbar navbar-inverse">
                 <div class="container-fluid">
                     <div class="navbar-header">
-                        <a class="navbar-brand" href="/">Multi-User App</a>
+                        <a class="navbar-brand" href="/">Multi-User Blog</a>
                     </div>
                     <ul class="nav navbar-nav">
                         <li><a href="{% url 'post_list' %}">List all Blog</a></li>
@@ -56,8 +56,8 @@
                 <ul class="nav navbar-nav">
                     <li><a href="{% url 'login' %}">Log in as Editor</a></li>
                     <li><a href="{% url 'login' %}">Log in as Chief</a></li>
-                    <li><a href="{% url 'signup' %}">Sign up as Editor</a></li>
-                    <li><a href="{% url 'signup' %}">Sign up as Chief</a></li>
+                    <li><a href="{% url 'editor_signup' %}">Sign up as Editor</a></li>
+                    <li><a href="{% url 'chief_signup' %}">Sign up as Chief</a></li>
                 </ul>
             </div>
         </nav>

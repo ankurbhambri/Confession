@@ -1,1 +1,4 @@
-from django.contrib.messages import constants as messages
+
+installed_apps = [
+    'debug_toolbar',
+]

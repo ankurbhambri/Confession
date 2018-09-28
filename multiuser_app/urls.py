@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
-from rest_framework_jwt.views import refresh_jwt_token, obtain_jwt_token
 
 from blog import views
 
@@ -24,17 +23,25 @@ from blog import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('blog/', include('django.contrib.auth.urls')),
-    path('blog/signup/', views.SignUpView.as_view(), name='signup'),
-    path('blog/signup/editor/', views.EditorSignUpView.as_view(), name='editor_signup'),
-    path('blog/signup/chief/', views.ChiefSignUpView.as_view(), name='chief_signup'),
+    path(
+        'blog/signup/',
+        views.SignUpView.as_view(),
+        name='signup'
+    ),
+    path(
+        'blog/signup/editor/',
+        views.EditorSignUpView.as_view(),
+        name='editor_signup'
+    ),
+    path(
+        'blog/signup/chief/',
+        views.ChiefSignUpView.as_view(),
+        name='chief_signup'
+    ),
     path('', include('blog.urls')),
-
-    # urls for api.
-    path('refresh-token/', refresh_jwt_token),
-    path(r'api-token-auth/', obtain_jwt_token)
 ]
 
 
-if settings.DEBUG:
+if settings.DEBUG and settings.FLAG:
     import debug_toolbar
     urlpatterns += [path('debug', include(debug_toolbar.urls))]
