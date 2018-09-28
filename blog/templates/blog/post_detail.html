@@ -1,19 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="post">
-        {% if post.published_date %}
-            <div class="date">
-                {{ post.published_date }}
-            </div>
-        {% endif %}
-        {% if user.is_authenticated %}
-            <p>owner: {{ user }}</p>
-            <a class="btn btn-default" href="{% url 'post_update' pk=post.pk %}">
-                <p>edit</p>
-                <span class="glyphicon glyphicon-pencil"></span>
-            </a>
-        {% endif %}
         <h1>{{ post.title }}</h1>
+        {% if post.owner == user %}
+            <a class="btn btn-default" href="{% url 'post_update' pk=post.pk %}">Edit</a>
+        {% endif %}
+        <p>Published on: {{ post.published_date }}
+            {% if post.is_approve %} &#x2713; {% endif %}
+        </p>
+        {% if user.is_authenticated %}
+            <p>Owner of this post: {{ post.owner|title }}</p>
+        {% endif %}
         <p>{{ post.text|linebreaksbr }}</p>
     </div>
 {% endblock %}

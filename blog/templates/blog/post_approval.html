@@ -1,16 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="post">
-        {% if user.is_authenticated %}
-            <form method="POST" class="post-form">
-                {% csrf_token %}
-                <p>owner: {{ post.owner }}</p>
-                <p>title: {{ post.title }}</p>
-                <p>text: {{ post.text }}</p>
-                {{ form.as_p }}
-                <button type="submit" class="save btn btn-default">Save</button>
-            </form>
-        {% endif %}
-    </div>
+
+        <div class="post">
+            {% if user.is_authenticated %}
+                <form method="POST" class="post-form">
+                    {% csrf_token %}
+                    <h1>{{ post.title }}</h1>
+                    <p>Owner: {{ post.owner|title }}</p>
+                    <p>Published on: {{ post.published_date }}</p>
+                    <p>{{ post.text }}</p>
+                    {{ form.as_p }}
+                    <button type="submit" class="save btn btn-default">Save</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endif %}
 {% endblock %}

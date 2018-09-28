@@ -16,8 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
+from rest_framework_jwt.views import refresh_jwt_token, obtain_jwt_token
 
 from blog import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,13 +28,13 @@ urlpatterns = [
     path('blog/signup/editor/', views.EditorSignUpView.as_view(), name='editor_signup'),
     path('blog/signup/chief/', views.ChiefSignUpView.as_view(), name='chief_signup'),
     path('', include('blog.urls')),
+
+    # urls for api.
+    path('refresh-token/', refresh_jwt_token),
+    path(r'api-token-auth/', obtain_jwt_token)
 ]
 
 
 if settings.DEBUG:
     import debug_toolbar
-    urlpatterns += [path(r'^debug/$', include(debug_toolbar.urls))]
-    # urlpatterns += [path((r'^media/(?P<path>.*)$', 'django.views.static.serve',
-    #                       {'document_root': settings.MEDIA_ROOT}))]
-    # urlpatterns += [path(r'^static/(?P<path>.*)$', 'django.views.static.serve',
-    #                      {'document_root': settings.STATIC_ROOT})]
+    urlpatterns += [path('debug', include(debug_toolbar.urls))]

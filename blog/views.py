@@ -54,7 +54,7 @@ class ChiefSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('post_approval_list')
+        return redirect('post_list')
 
 
 @method_decorator([login_required], name='dispatch')

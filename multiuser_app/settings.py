@@ -43,6 +43,8 @@ INSTALLED_APPS = [
 
     'debug_toolbar',
     'crispy_forms',
+    'rest_framework',
+    'rest_framework.authtoken',
 
     'blog',
 ]
@@ -91,6 +93,14 @@ if DEBUG:
     }
 
     SHOW_TOOLBAR_CALLBACK = True
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    )
+}
 
 ROOT_URLCONF = 'multiuser_app.urls'
 
@@ -194,3 +204,12 @@ MESSAGE_TAGS = {
 # Third party apps configuration
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+REST_USE_JWT = True
+
+import datetime
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=1),
+    'JWT_ALLOW_REFRESH': True,
+}

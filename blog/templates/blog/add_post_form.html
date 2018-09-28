@@ -1,11 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>New post</h1>
-    <form method="POST" class="post-form">
-        {% csrf_token %}
-        <p>owner: {{ user }}</p>
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Save</button>
-    </form>
+    {% if post.owner == user %}
+        <h1>New post</h1>
+        <form method="POST" class="post-form">
+            {% csrf_token %}
+            <p>Owner: {{ user|title }}</p>
+            {% for field in form %}
+    	        <p class="fieldWrapper">
+    	            {{ field.errors }}
+                    <label for="lname">{{ field.label_tag }}</label>
+    	             {{ field }}
+    	        </p>
+    	    {% endfor %}
+            <!-- {{ form.as_p }} -->
+            <button type="submit" class="save btn btn-default">Save</button>
+        </form>
+    {% endif %}
 {% endblock %}
