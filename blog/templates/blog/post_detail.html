@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="post">
-        <h1>{{ post.title }}</h1>
+        <h1 align="center">{{ post.title }}</h1>
         {% if post.owner == user %}
             <a class="btn btn-default" href="{% url 'post_update' pk=post.pk %}">Edit</a>
         {% endif %}
@@ -9,8 +9,8 @@
             {% if post.is_approve %} &#x2713; {% endif %}
         </p>
         {% if user.is_authenticated %}
-            <p>Owner of this post: {{ post.owner|title }}</p>
+            <p>{{ post.owner|title }}</p>
         {% endif %}
-        <p>{{ post.text|linebreaksbr }}</p>
+        <p>{{ post.text|safe }}</p>
     </div>
 {% endblock %}

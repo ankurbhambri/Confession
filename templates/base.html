@@ -24,7 +24,15 @@
             border-radius: 4px;
             resize: vertical;
         }
+        a[class="btn btn-default"] {
+            background-color: #ffa5a5;
+        }
     </style>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="/static/base/js/main.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    {{ form.media }}
 </head>
 <body>
     <div class="container">
@@ -44,23 +52,23 @@
                 {% if user.is_editor %}
                     <p>I am Editor</p>
                 {% else %}
-                    <p>I am Chief</p>
+                    <p>I am Moderator</p>
                 {% endif %}
             <a class="btn btn-default" href="{% url 'post' %}">Add New Blog</a>
         {% else %}
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="/">Multi-User App</a>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="/">Multi-User App</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li><a href="{% url 'login' %}">Log in as Editor</a></li>
+                        <li><a href="{% url 'login' %}">Log in as Moderator</a></li>
+                        <li><a href="{% url 'editor_signup' %}">Sign up as Editor</a></li>
+                        <li><a href="{% url 'chief_signup' %}">Sign up as Moderator</a></li>
+                    </ul>
                 </div>
-                <ul class="nav navbar-nav">
-                    <li><a href="{% url 'login' %}">Log in as Editor</a></li>
-                    <li><a href="{% url 'login' %}">Log in as Chief</a></li>
-                    <li><a href="{% url 'editor_signup' %}">Sign up as Editor</a></li>
-                    <li><a href="{% url 'chief_signup' %}">Sign up as Chief</a></li>
-                </ul>
-            </div>
-        </nav>
+            </nav>
         {% endif %}
         {% block content %}
         {% endblock %}

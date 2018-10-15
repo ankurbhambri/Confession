@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 
-from django.contrib.messages import constants as messages
 
 global FLAG
 FLAG = True
@@ -49,6 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
 
     'crispy_forms',
+    'ckeditor',
+    'ckeditor_uploader',
 
     'blog',
 ]
@@ -120,36 +121,129 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, 'static'),
 # ]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+CKEDITOR_UPLOAD_PATH = 'uploads/'
 
-# Custom Django auth settings
+# CKEDITOR_CONFIGS = {
+#     'default': {
+#         'toolbar': 'Custom',
+#         'height': 500,
+#         'toolbar_Custom': [
+#             ['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
+#             ['Link', 'Unlink', 'Anchor'],
+#             ['Image', 'Flash', 'Table', 'HorizontalRule'],
+#             ['TextColor', 'BGColor'],
+#             ['Smiley', 'SpecialChar'], ['Source'],
+#         ],
+#     },
+#     'special': {
+#         'toolbar': 'Special',
+#         'toolbar_Special': [
+#             ['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
+#             ['Link', 'Unlink', 'Anchor'],
+#             ['Image', 'Flash', 'Table', 'HorizontalRule'],
+#             ['TextColor', 'BGColor'],
+#             ['Smiley', 'SpecialChar'], ['CodeSnippet'],
+#         ],
+#         'extraPlugins': 'codesnippet',
+#     }
+# }
+CKEDITOR_CONFIGS = {
+    'default': {
+        'skin': 'moono',
+        # 'skin': 'office2013',
+        'toolbar_Basic': [
+            ['Source', '-', 'Bold', 'Italic']
+        ],
+        'toolbar_YourCustomToolbarConfig': [
+            {'name': 'document', 'items': ['Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
+            {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', '-', 'Undo', 'Redo']},
+            {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
+            {'name': 'forms',
+             'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
+                       'HiddenField']},
+            '/',
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+            {'name': 'paragraph',
+             'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
+                       'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
+                       'Language']},
+            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+            {'name': 'insert',
+             'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+            '/',
+            {'name': 'codesnippet', 'items': ['CodeSnippet']},
+            '/',
+            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+            {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
+            {'name': 'about', 'items': ['About']},
+            '/',  # put this to force next toolbar on new line
+            {'name': 'yourcustomtools', 'items': [
+                # put the name of your editor.ui.addButton here
+                'Preview',
+                'Maximize',
+
+            ]},
+        ],
+        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
+        # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+        # 'height': 291,
+        # 'width': '100%',
+        # 'filebrowserWindowHeight': 725,
+        # 'filebrowserWindowWidth': 940,
+        # 'toolbarCanCollapse': True,
+        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        'tabSpaces': 4,
+        'extraPlugins': ','.join([
+            'uploadimage', # the upload image feature
+            # your extra plugins here
+            # 'div',
+            # 'autolink',
+            # 'autoembed',
+            # 'embedsemantic',
+            # 'autogrow',
+            # 'devtools',
+            'codesnippet',
+            # 'widget',
+            # 'lineutils',
+            # 'clipboard',
+            # 'dialog',
+            # 'dialogui',
+            # 'elementspath'
+        ]),
+    }
+}
+CKEDITOR_BROWSE_SHOW_DIRS = False
 
 AUTH_USER_MODEL = 'blog.User'
 
 LOGIN_URL = 'login'
-
 LOGOUT_URL = 'logout'
-
 LOGIN_REDIRECT_URL = 'post_list'
-
 LOGOUT_REDIRECT_URL = 'home'
+FROALA_INCLUDE_JQUERY = False
+
 
 try:
     if DEBUG and FLAG:
@@ -181,7 +275,6 @@ try:
         DEBUG_TOOLBAR_CONFIG = {
             'INTERCEPT_REDIRECTS': False,
             'SHOW_TOOLBAR_CALLBACK': show_toolbar,
-            # 'EXTRA_SIGNALS': ['myproject.signals.MySignal'],
             'HIDE_DJANGO_SQL': False,
         }
 

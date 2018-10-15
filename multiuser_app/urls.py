@@ -15,7 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import url
 from django.conf import settings
+from django.views.static import serve
+from django.conf.urls.static import static
+from django.views.decorators.cache import never_cache
+
+from ckeditor_uploader import views as uploader_views
 
 from blog import views
 
@@ -39,9 +45,18 @@ urlpatterns = [
         name='chief_signup'
     ),
     path('', include('blog.urls')),
-]
+    # path('ckeditor/', include('ckeditor_uploader.urls')),
+    url(r'^ckeditor/upload/',
+        uploader_views.upload, name='ckeditor_upload'),
+    url(r'^ckeditor/browse/',
+        never_cache(uploader_views.browse), name='ckeditor_browse'),
+    
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 if settings.DEBUG and settings.FLAG:
     import debug_toolbar
     urlpatterns += [path('debug', include(debug_toolbar.urls))]
+    # urlpatterns += [url(r'^(.*)$', serve,
+    #                     {'document_root': settings.MEDIA_ROOT})]
+    # urlpatterns += static('media/', document_root=settings.MEDIA_ROOT)
