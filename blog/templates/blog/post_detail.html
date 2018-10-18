@@ -1,10 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="post">
-        <h1 align="center">{{ post.title }}</h1>
-        {% if post.owner == user %}
-            <a class="btn btn-default" href="{% url 'post_update' pk=post.pk %}">Edit</a>
-        {% endif %}
+        <h1 class="title" align="center">{{ post.title }}</h1>
         <p>Published on: {{ post.published_date }}
             {% if post.is_approve %} &#x2713; {% endif %}
         </p>
@@ -12,5 +9,29 @@
             <p>{{ post.owner|title }}</p>
         {% endif %}
         <p>{{ post.text|safe }}</p>
+    </div>
+    <hr>
+    <div class="comment" align="left">
+        <h1 class="title">Comments</h1>
+        <form method="POST" class="form-comment">
+            {% csrf_token %}  
+            <div class="block-streamText" style="width:40%;">
+                <div class="postArticle postArticle--short">
+                    {{ form }}
+                    <button type="submit" class="save btn btn-default">Submit</button>
+                </div>
+            </div>
+            <!-- <button type="submit" class="save btn btn-default">Submit</button> -->
+        </form>
+    </div>
+    <hr>
+    <div class="show-comment">
+        {% for comment in comments %}
+                <p>
+                    <b>{{ comment.0|title }}: </b>
+                    {{comment.1}}
+                    <a class="anchor" href="{% url 'comment_reply' pk=comment.2 %}">reply</a>
+                </p>
+        {% endfor %}
     </div>
 {% endblock %}

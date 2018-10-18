@@ -9,11 +9,10 @@
                     <h1>{{ post.title }}</h1>
                     <p>Owner: {{ post.owner|title }}</p>
                     <p>Published on: {{ post.published_date }}</p>
-                    <p>{{ post.text }}</p>
+                    <p>{{ post.text|safe }}</p>
                     {{ form.as_p }}
                     <button type="submit" class="save btn btn-default">Save</button>
                 </form>
             {% endif %}
         </div>
-    {% endif %}
 {% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="post">
+        <p>{{ comment.comment|safe }}</p>
+    </div>
+    <hr>
+    <div class="comment" align="left">
+        <h1 class="title">Responses</h1>
+        <form method="POST" class="form-comment">
+            {% csrf_token %}  
+            <div class="block-streamText" style="width:40%;">
+                <div class="postArticle postArticle--short">
+                    {{ form }}
+                    <button type="submit" class="save btn btn-default">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <hr>
+    <div class="show-comment">
+        {% for r in reply %}
+                <p>
+                    <b>{{ r.0|title }}: </b>
+                    {{r.1}}
+                    
+                </p>
+        {% endfor %}
+    </div>
+{% endblock %}

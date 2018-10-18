@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     {% if user.is_authenticated %}
-        <p>Owner: {{ user|title }}</p>
+        <p align="right">{{ user|title }}</p>
     {% endif %}
     {% for post in post_list %}
         <div class="w3-row" style="border-style: outset;border-width: medium;">

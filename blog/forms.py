@@ -6,11 +6,6 @@ from .models import *
 
 
 class EditorSignUpForm(UserCreationForm):
-    # interests = forms.ModelMultipleChoiceField(
-    #     queryset=Post.objects.all(),
-    #     widget=forms.CheckboxSelectMultiple,
-    #     required=True
-    # )
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -25,6 +20,7 @@ class EditorSignUpForm(UserCreationForm):
 
 
 class ChiefSignUpForm(UserCreationForm):
+
     class Meta(UserCreationForm.Meta):
         model = User
 
@@ -34,3 +30,19 @@ class ChiefSignUpForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class CommentForm(forms.ModelForm):
+    comment = forms.CharField(label="", help_text="", widget=forms.Textarea())
+
+    class Meta:
+        model = Comment
+        fields = ('comment',)
+
+
+class ReplyForm(forms.ModelForm):
+    reply = forms.CharField(label="", help_text="", widget=forms.Textarea())
+
+    class Meta:
+        model = Reply
+        fields = ('reply',)
