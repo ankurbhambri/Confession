@@ -1,31 +1,35 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="w3-main" style="margin-left:250px width:200%;max-width:1000px;box-shadow:1 border-style: outset;border-width: medium;">
-        {% for post in post_list %}
-            <div class="w3-row" style="border-style: outset;border-width: medium;">
-                <div class="w3-twothird w3-container">
-                    <h1 class="w3-text-teal">
-                        <a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a>
-                    </h1>
-                    {% if users %}
-                        <a class="anchor" href="{% url 'post_approval_list' pk=post.pk %}">
-                            {% if post.is_approve %}
-                                Approved
-                            {% else %}
-                                Not Approve {% if post.is_approve %} &#10007; {% endif %}
-                            {% endif %}
-                        </a>
-                    {% endif %}
-                    <div class='date'>
-                        <p>Published on: {{ post.published_date }} {% if post.is_approve %} &#x2713; {% else %}  &#10007; {% endif %}</p>
-                        <p>Publisher: {{ post.owner|title }}</p>
+    {% if post_list %}
+        <div class="w3-main" style="margin-left:250px width:200%;max-width:1000px;box-shadow:1 border-style: outset;border-width: medium;">
+            {% for post in post_list %}
+                <div class="w3-row" style="border-style: outset;border-width: medium;">
+                    <div class="w3-twothird w3-container">
+                        <h1 class="w3-text-teal">
+                            <a class="title" href="{% url 'post_detail' pk=post.pk %}">{{ post.title|title }}</a>
+                        </h1>
+                        {% if users %}
+                            <a class="anchor" href="{% url 'post_approve' pk=post.pk %}">
+                                {% if post.is_approve %}
+                                    Approved
+                                {% else %}
+                                    Not Approve {% if post.is_approve %} &#10007; {% endif %}
+                                {% endif %}
+                            </a>
+                        {% endif %}
+                        <div class='date'>
+                            <p>Published on: {{ post.published_date }} {% if post.is_approve %} &#x2713; {% else %}  &#10007; {% endif %}</p>
+                            <p>Publisher: {{ post.owner|title }}</p>
+                        </div>
+                        <p>{{ post.text|safe|truncatechars:255 }}<a class="anchor" href="{% url 'post_detail' pk=post.pk %}">continue reading</a></p>
                     </div>
-                    <p>{{ post.text|safe|truncatechars:255 }}<a class="anchor" href="{% url 'post_detail' pk=post.pk %}">continue reading</a></p>
                 </div>
-            </div>
-            <br/>
-        {% endfor %}
-    </div>
+                <br/>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p> You have no blogs </p>
+    {% endif %}
     {% if is_paginated %}
         <div class="pagination" style="padding-left: 452px;">
             <span class="page-links">
@@ -40,5 +44,6 @@
                 {% endif %}
             </span>
         </div>
+    }
 {% endif %}
 {% endblock %}

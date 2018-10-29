@@ -15,7 +15,7 @@ class Post(models.Model):
         on_delete=models.CASCADE,
         related_name='posts'
     )
-    title = models.CharField(max_length=30)
+    title = models.CharField(max_length=255)
     text = RichTextUploadingField()
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
@@ -68,6 +68,7 @@ class Reply(models.Model):
         on_delete=models.CASCADE,
         related_name='reply'
     )
+    blog = models.ForeignKey(Post, on_delete=models.CASCADE)
     which_comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     reply = models.TextField()
     reply_datetime = models.DateTimeField(auto_now_add=True)

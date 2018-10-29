@@ -29,11 +29,11 @@ from blog import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('blog/', include('django.contrib.auth.urls')),
-    path(
-        'blog/signup/',
-        views.SignUpView.as_view(),
-        name='signup'
-    ),
+    # path(
+    #     'blog/signup/',
+    #     views.SignUpView.as_view(),
+    #     name='signup'
+    # ),
     path(
         'blog/signup/editor/',
         views.EditorSignUpView.as_view(),
@@ -45,12 +45,11 @@ urlpatterns = [
         name='chief_signup'
     ),
     path('', include('blog.urls')),
-    # path('ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^ckeditor/upload/',
         uploader_views.upload, name='ckeditor_upload'),
     url(r'^ckeditor/browse/',
         never_cache(uploader_views.browse), name='ckeditor_browse'),
-    
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

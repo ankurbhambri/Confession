@@ -2,17 +2,21 @@
 
 {% block content %}
 
-        <div class="post">
-            {% if user.is_authenticated %}
-                <form method="POST" class="post-form">
-                    {% csrf_token %}
-                    <h1>{{ post.title }}</h1>
-                    <p>Owner: {{ post.owner|title }}</p>
-                    <p>Published on: {{ post.published_date }}</p>
-                    <p>{{ post.text|safe }}</p>
-                    {{ form.as_p }}
-                    <button type="submit" class="save btn btn-default">Save</button>
-                </form>
-            {% endif %}
-        </div>
+    <div class="post">
+        <h1 class="title" align="center">{{ post.title }}</h1>
+        <p>Published on: {{ post.published_date }}
+            {% if post.is_approve %} &#x2713; {% endif %}
+        </p>
+        {% if user.is_authenticated %}
+            <p>{{ post.owner|title }}</p>
+        {% endif %}
+        <p>{{ post.text|safe }}</p>
+        <form method="POST" class="post-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-default">Save</button>
+        </form>
+    </div>
 {% endblock %}
+
+

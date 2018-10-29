@@ -5,6 +5,11 @@ from .views import *
 
 urlpatterns = [
     path(
+        'login',
+        CustomLoginView.as_view(),
+        name='login'
+    ),
+    path(
         'post',
         IndexView.as_view(),
         name='post'
@@ -32,7 +37,7 @@ urlpatterns = [
     path(
         'post-approval-list/<int:pk>',
         PostApprovalView.as_view(),
-        name='post_approval_list'
+        name='post_approve'
     ),
     path(
         'post/approve-list',
@@ -49,9 +54,9 @@ urlpatterns = [
         CommentReplyView.as_view(),
         name="comment_reply"
     ),
-    # path(
-    #     'post/comment/<int:pk>',
-    #     CommentReplyView.as_view(),
-    #     name="comment_reply"
-    # ),
+    path(
+        'post/approved-list/',
+        PostApprovedView.as_view(),
+        name="user_approved"
+    ),
 ]

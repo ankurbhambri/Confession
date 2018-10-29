@@ -5,15 +5,13 @@
         <p>Published on: {{ post.published_date }}
             {% if post.is_approve %} &#x2713; {% endif %}
         </p>
-        {% if user.is_authenticated %}
-            <p>{{ post.owner|title }}</p>
-        {% endif %}
+        <p>{{ post.owner|title }}</p>
         <p>{{ post.text|safe }}</p>
     </div>
     <hr>
     <div class="comment" align="left">
         <h1 class="title">Comments</h1>
-        <form method="POST" class="form-comment">
+        <form method="POST" class="form-comment" id="form-comment">
             {% csrf_token %}  
             <div class="block-streamText" style="width:40%;">
                 <div class="postArticle postArticle--short">
@@ -34,4 +32,21 @@
                 </p>
         {% endfor %}
     </div>
+    <script type="text/javascript">
+        $("#form-comment").submit(function(event){
+            event.preventDefault(); //prevent default action 
+            var post_url = $(this).attr("action"); //get form action url
+            var request_method = $(this).attr("method"); //get form GET/POST method
+            var form_data = $(this).serialize(); //Encode form elements for submission
+            
+            $.ajax({
+                url : post_url,
+                type: request_method,
+                data : form_data
+            }).done(function(response){
+           alert(response);
+           alert(JSON.stringify(response));
+            });
+        });
+    </script>
 {% endblock %}

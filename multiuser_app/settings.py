@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
 
     'blog',
+    'notifications',
 ]
 
 MIDDLEWARE = [
@@ -89,12 +90,13 @@ WSGI_APPLICATION = 'multiuser_app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+DATABASES = MYSQL
 
 
 # Password validation
@@ -134,39 +136,15 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static'),
-# ]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 
-# CKEDITOR_CONFIGS = {
-#     'default': {
-#         'toolbar': 'Custom',
-#         'height': 500,
-#         'toolbar_Custom': [
-#             ['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
-#             ['Link', 'Unlink', 'Anchor'],
-#             ['Image', 'Flash', 'Table', 'HorizontalRule'],
-#             ['TextColor', 'BGColor'],
-#             ['Smiley', 'SpecialChar'], ['Source'],
-#         ],
-#     },
-#     'special': {
-#         'toolbar': 'Special',
-#         'toolbar_Special': [
-#             ['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
-#             ['Link', 'Unlink', 'Anchor'],
-#             ['Image', 'Flash', 'Table', 'HorizontalRule'],
-#             ['TextColor', 'BGColor'],
-#             ['Smiley', 'SpecialChar'], ['CodeSnippet'],
-#         ],
-#         'extraPlugins': 'codesnippet',
-#     }
-# }
 CKEDITOR_CONFIGS = {
     'default': {
         'skin': 'moono',
@@ -175,29 +153,54 @@ CKEDITOR_CONFIGS = {
             ['Source', '-', 'Bold', 'Italic']
         ],
         'toolbar_YourCustomToolbarConfig': [
-            {'name': 'document', 'items': ['Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
-            {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', '-', 'Undo', 'Redo']},
-            {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
-            {'name': 'forms',
-             'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
-                       'HiddenField']},
+            {
+                'name': 'document',
+                'items': ['Save', 'Preview', 'Print', '-', 'Templates']
+            },
+            {
+                'name': 'clipboard',
+                'items': ['Cut', 'Copy', 'Paste', '-', 'Undo', 'Redo']
+            },
+            {
+                'name': 'editing',
+                'items': ['Find', 'Replace', '-', 'SelectAll']
+            },
+            {
+                'name': 'forms',
+                'items': ['Form', 'Checkbox', 'Radio', 'TextField',
+                          'Textarea', 'Select', 'Button', 'ImageButton',
+                          'HiddenField'
+                          ]
+            },
             '/',
-            {'name': 'basicstyles',
-             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
-            {'name': 'paragraph',
-             'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
-                       'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
-                       'Language']},
-            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
-            {'name': 'insert',
-             'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+            {
+                'name': 'basicstyles',
+                'items': ['Bold', 'Italic', 'Underline', 'Strike',
+                          'Subscript', 'Superscript', '-', 'RemoveFormat'
+                          ]
+            },
+            {
+                'name': 'paragraph',
+                'items': ['NumberedList', 'BulletedList', '-', 'Outdent',
+                          'Indent', '-', 'Blockquote', 'CreateDiv', '-',
+                          'JustifyLeft', 'JustifyCenter', 'JustifyRight',
+                          'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
+                          'Language'
+                          ]
+            },
+            {
+                'name': 'links',
+                'items': ['Link', 'Unlink', 'Anchor']
+            },
+            {
+                'name': 'insert',
+                'items': ['Image', 'Flash', 'Table', 'HorizontalRule',
+                          'Smiley', 'SpecialChar', 'PageBreak', 'Iframe'
+                          ]
+            },
             '/',
             {'name': 'codesnippet', 'items': ['CodeSnippet']},
             '/',
-            # {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
-            # {'name': 'colors', 'items': ['TextColor', 'BGColor']},
-            # {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
-            # {'name': 'about', 'items': ['About']},
             '/',  # put this to force next toolbar on new line
             {'name': 'yourcustomtools', 'items': [
                 # put the name of your editor.ui.addButton here
@@ -206,17 +209,10 @@ CKEDITOR_CONFIGS = {
 
             ]},
         ],
-        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
-        # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
-        # 'height': 291,
-        # 'width': '100%',
-        # 'filebrowserWindowHeight': 725,
-        # 'filebrowserWindowWidth': 940,
-        # 'toolbarCanCollapse': True,
-        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        'toolbar': 'YourCustomToolbarConfig',
         'tabSpaces': 4,
         'extraPlugins': ','.join([
-            'uploadimage', # the upload image feature
+            'uploadimage',  # the upload image feature
             # your extra plugins here
             # 'div',
             # 'autolink',
