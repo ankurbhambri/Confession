@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="post">
+            {% for p in post%}
+                <a class="title" href="{% url 'post_detail' pk=p.1%}">
+                    <h2 class="title">Comments for the Post {{p.0|title}}</h2>
+                </a>
+            {% endfor %}
         <p>{{ comment.comment|safe }}</p>
     </div>
     <hr>

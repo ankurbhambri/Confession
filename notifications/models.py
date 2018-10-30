@@ -5,6 +5,10 @@ from django.db import models
 from django.conf import settings
 
 
+# class ActivityType(models.Model):
+#     activity_type = 
+
+
 class Notification(models.Model):
     sender = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -19,8 +23,6 @@ class Notification(models.Model):
 
     unread = models.BooleanField(default=True, blank=False)
     deleted = models.BooleanField(default=False)
-
-    # unread = models.BooleanField(default=True, blank=False, db_index=True)
 
     class Meta:
         ordering = ['-timestamp']

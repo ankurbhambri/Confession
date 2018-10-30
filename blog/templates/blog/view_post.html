@@ -1,10 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
-<br>
-    {% for notify in notifications %}
-        {{notify}}
-        <br>
-    {% endfor %}
     <div class="w3-main" style="margin-left:250px width:200%;max-width:1000px;box-shadow:1 border-style: outset;border-width: medium;">
         {% for post in post_list %}
             <div class="w3-row" style="border-style: outset;border-width: medium;">

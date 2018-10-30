@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
 from django.utils.decorators import method_decorator
@@ -49,7 +49,7 @@ class HomeView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        context['notifications'] = recieve(self.request.user)
+        context['notifications'], context['unread_count'] = recieve(self.request.user)
         return context
 
 
@@ -136,6 +136,7 @@ class PostListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(PostListView, self).get_context_data(**kwargs)
         context['users'] = False
+        context['notifications'] = recieve(self.request.user)
         check = User.objects.filter(
             username=self.request.user,
             is_chief=True
@@ -157,7 +158,7 @@ class PostDetailView(FormMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(PostDetailView, self).get_context_data(**kwargs)
         comments = Comment.objects.filter(blog_id=self.get_object().id)
-
+        context['notifications'] = recieve(self.request.user)
         # provide the columns name in values_list
         context['comments'] = comments.values_list(
             'user_id__username', 'comment', 'id')
@@ -191,6 +192,11 @@ class PostUpdateView(UpdateView):
     fields = ['title', 'text']
     success_url = '/post_list'
 
+    def get_context_data(self, **kwargs):
+        context = super(PostUpdateView, self).get_context_data(**kwargs)
+        context['notifications'] = recieve(self.request.user)
+        return context
+
 
 @method_decorator([login_required, chief_required], name='dispatch')
 class PostApprovalListView(ListView):
@@ -204,6 +210,11 @@ class PostApprovalListView(ListView):
 
     def get_queryset(self):
         return Post.objects.filter(is_approve=False)
+
+    def get_context_data(self, **kwargs):
+        context = super(PostApprovalListView, self).get_context_data(**kwargs)
+        context['notifications'] = recieve(self.request.user)
+        return context
 
 
 @method_decorator([login_required, chief_required], name='dispatch')
@@ -232,6 +243,11 @@ class PostApprovalView(UpdateView):
         )
         return reverse_lazy('post_approve_list')
 
+    def get_context_data(self, **kwargs):
+        context = super(PostApprovalView, self).get_context_data(**kwargs)
+        context['notifications'] = recieve(self.request.user)
+        return context
+
 
 @method_decorator([login_required, chief_required], name='dispatch')
 class PostApprovedView(ListView):
@@ -245,6 +261,11 @@ class PostApprovedView(ListView):
 
     def get_queryset(self):
         return Post.objects.filter(is_approve=True)
+
+    def get_context_data(self, **kwargs):
+        context = super(PostApprovedView, self).get_context_data(**kwargs)
+        context['notifications'] = recieve(self.request.user)
+        return context
 
 
 @method_decorator([login_required], name='dispatch')
@@ -267,7 +288,10 @@ class CommentReplyView(FormMixin, DetailView):
         # print(self.pk)
         context = super(CommentReplyView, self).get_context_data(**kwargs)
         reply = Reply.objects.filter(which_comment_id=self.get_object().id)
-
+        comment = Comment.objects.filter(id=self.get_object().id)
+        context['post'] = comment.values_list(
+            'blog_id__title', 'blog_id__id',)
+        context['notifications'] = recieve(self.request.user)
         # provide the columns name in values_list
         context['reply'] = reply.values_list('user_id__username', 'reply')
         context['form'] = ReplyForm(initial={'post': self.object})

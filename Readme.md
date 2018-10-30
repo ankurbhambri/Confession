@@ -5,7 +5,9 @@ There are three type of user how can use this application, Editor, Chief and ano
     - Editor: Can create and read blogs.
     - Chief: Can read, write, and approve editors blog.
     - Anonymous: Only read approved blogs.
-
+#### Features
+- Any registered user can write blog, comment and reply on approved blogs.
+- Notification system
 ### Quick Setup
 - Create a vitual environment.
   - `virtualenv -p python3.6 venv`

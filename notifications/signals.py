@@ -1,4 +1,5 @@
 from .models import Notification
+from blog.models import Post
 
 
 def send(sender, recipient, verb):
@@ -16,6 +17,11 @@ def recieve(receiver, sender=None):
             sender=sender
         ).order_by('-timestamp')
     else:
-        return Notification.objects.filter(
+        q = Notification.objects.filter(
             object_id=receiver.id
         ).order_by('-timestamp')
+        unread_count = 0
+        for i in q:
+            if i.unread:
+                unread_count += 1
+        return q, unread_count
