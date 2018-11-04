@@ -1,9 +1,10 @@
-from django.urls import path
+from django.urls import path, include
 from django.conf.urls import url
 from .views import *
 
 
 urlpatterns = [
+    path('api/', include('blog.apis.urls')),
     path(
         'login',
         CustomLoginView.as_view(),

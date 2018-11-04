@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
 from django.utils.decorators import method_decorator
@@ -13,25 +13,12 @@ from django.views.generic import (
 )
 from django.views.generic.edit import FormMixin, FormView
 from django.urls import reverse_lazy
-
-from django.db.models.signals import pre_save, post_save
-from django.dispatch import receiver
+from django.core.exceptions import ObjectDoesNotExist
 
 from .decorators import editor_required, chief_required
 from .forms import *
 from .models import *
 from notifications.signals import send, recieve
-
-
-@receiver(pre_save, sender=Post)
-def function_pre_save(sender, **kwargs):
-    print(sender, kwargs)
-    print('function for pre save called')
-
-
-@receiver(post_save, sender=Post)
-def function_post_save(sender, instance, created, **kwargs):
-    print('function for post save called')
 
 
 class HomeView(ListView):
@@ -114,13 +101,15 @@ class IndexView(CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         post.owner = self.request.user
-        post.published_date = timezone.now()
         post.save()
         return redirect('post_list')
 
 
 @method_decorator([login_required], name='dispatch')
 class PostListView(ListView):
+    '''
+    Show loggedIn user's post
+    '''
     ordering = ('published_date',)
     context_object_name = 'post_list'
     template_name = 'blog/post_list.html'
@@ -136,7 +125,7 @@ class PostListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(PostListView, self).get_context_data(**kwargs)
         context['users'] = False
-        context['notifications'] = recieve(self.request.user)
+        context['notifications'], context['unread_count'] = recieve(self.request.user)
         check = User.objects.filter(
             username=self.request.user,
             is_chief=True
@@ -158,7 +147,7 @@ class PostDetailView(FormMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(PostDetailView, self).get_context_data(**kwargs)
         comments = Comment.objects.filter(blog_id=self.get_object().id)
-        context['notifications'] = recieve(self.request.user)
+        context['notifications'], context['unread_count'] = recieve(self.request.user)
         # provide the columns name in values_list
         context['comments'] = comments.values_list(
             'user_id__username', 'comment', 'id')
@@ -194,7 +183,7 @@ class PostUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(PostUpdateView, self).get_context_data(**kwargs)
-        context['notifications'] = recieve(self.request.user)
+        context['notifications'], context['unread_count'] = recieve(self.request.user)
         return context
 
 
@@ -213,7 +202,7 @@ class PostApprovalListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(PostApprovalListView, self).get_context_data(**kwargs)
-        context['notifications'] = recieve(self.request.user)
+        context['notifications'], context['unread_count'] = recieve(self.request.user)
         return context
 
 
@@ -245,7 +234,7 @@ class PostApprovalView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(PostApprovalView, self).get_context_data(**kwargs)
-        context['notifications'] = recieve(self.request.user)
+        context['notifications'], context['unread_count'] = recieve(self.request.user)
         return context
 
 
@@ -264,7 +253,7 @@ class PostApprovedView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(PostApprovedView, self).get_context_data(**kwargs)
-        context['notifications'] = recieve(self.request.user)
+        context['notifications'], context['unread_count'] = recieve(self.request.user)
         return context
 
 
@@ -291,7 +280,7 @@ class CommentReplyView(FormMixin, DetailView):
         comment = Comment.objects.filter(id=self.get_object().id)
         context['post'] = comment.values_list(
             'blog_id__title', 'blog_id__id',)
-        context['notifications'] = recieve(self.request.user)
+        context['notifications'], context['unread_count'] = recieve(self.request.user)
         # provide the columns name in values_list
         context['reply'] = reply.values_list('user_id__username', 'reply')
         context['form'] = ReplyForm(initial={'post': self.object})

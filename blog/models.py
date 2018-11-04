@@ -4,6 +4,12 @@ from django.utils import timezone
 from ckeditor_uploader.fields import RichTextUploadingField
 
 
+REQUEST_CHOICES = (
+    ('api', 'api'),
+    ('template', 'template')
+)
+
+
 class User(AbstractUser):
     is_editor = models.BooleanField(default=False)
     is_chief = models.BooleanField(default=False)
@@ -17,14 +23,15 @@ class Post(models.Model):
     )
     title = models.CharField(max_length=255)
     text = RichTextUploadingField()
-    created_date = models.DateTimeField(default=timezone.now)
-    published_date = models.DateTimeField(blank=True, null=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    published_date = models.DateTimeField(auto_now_add=True)
     is_approve = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
-
-    def publish(self):
-        self.created_date = timezone.now()
-        self.save()
+    request_from = models.CharField(
+        max_length=10,
+        choices=REQUEST_CHOICES,
+        default='template'
+    )
 
     def __str__(self):
         return self.title
