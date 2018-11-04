@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.validators import UniqueValidator
 
 from blog.models import Post, Comment, Reply
+from notifications.models import Notification
 
 User = get_user_model()
 
@@ -135,3 +136,10 @@ class ReplySerializer(serializers.ModelSerializer):
     class Meta:
         model = Reply
         fields = ('reply', 'which_comment_id', 'blog_id', 'user_id')
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Notification
+        fields = '__all__'

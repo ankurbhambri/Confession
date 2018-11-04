@@ -10,6 +10,7 @@ from .blog_views import (
     PostApprovalFormView,
     CommentView,
     ReplyView,
+    NotificationView,
 )
 
 
@@ -23,6 +24,10 @@ post_list = PostListView.as_view({'get': 'list'})
 post_approval_list = PostApprovalListView.as_view({'get': 'list'})
 
 post_approve = PostApprovalFormView.as_view({'put': 'update'})
+notification = NotificationView.as_view({
+    'get': 'list',
+    'put': 'update'
+})
 
 urlpatterns = [
     # path('', include(router.urls)),
@@ -40,6 +45,7 @@ urlpatterns = [
     path('approval-list', post_approval_list, name='api-approval-list'),
     path('approve/<int:pk>', post_approve, name='api-approve'),
 
-    path('comment', CommentView.as_view(), name='comment'),
-    path('reply', ReplyView.as_view(), name='reply'),
+    path('comment', CommentView.as_view(), name='api-comment'),
+    path('reply', ReplyView.as_view(), name='api-reply'),
+    path('notification', notification, name='api-notification'),
 ]

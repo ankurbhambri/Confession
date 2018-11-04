@@ -3,10 +3,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status, permissions, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from rest_framework_jwt.settings import api_settings
 from rest_framework.authentication import get_authorization_header
 
 from blog.models import Post, User
+from notifications.models import Notification
 from .serializers import *
 from .permissions import ChiefRequiredPermission
 
@@ -279,3 +281,16 @@ class ReplyView(APIView):
                 {"success": False, "error": str(e)},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+
+class NotificationView(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = NotificationSerializer
+
+    def get_queryset(self):
+        return Notification.objects.filter(object_id=self.request.user.id)
+
+    def update(self, request, pk=None):
+        Notification.objects.filter(
+            object_id=request.user.id).update(unread=False)
+        return Response({'success': True, }, status=status.HTTP_202_ACCEPTED)
