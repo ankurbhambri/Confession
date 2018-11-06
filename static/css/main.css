@@ -1,0 +1,26 @@
+a.anchor {
+    color: blue;
+
+}
+a.title {
+    color: #009688;
+}
+h1.title, h2.title {
+    color: #009688;
+}
+textarea {
+    width: 100%;
+    padding: 0px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+}
+a[class="btn btn-default"] {
+    color: #009688;
+    font-weight: bold
+}
+button[class="btn btn-default"] {
+    color: #009688;
+    font-weight: bold
+}
+span.align-right { text-align:right; }

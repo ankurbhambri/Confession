@@ -17,6 +17,4 @@ db.sqlite3
 =0.2.0
 coverage_html/
 htmlcov/
-static/*
-media/*
 uploads/*
