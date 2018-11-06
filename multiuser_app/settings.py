@@ -97,7 +97,7 @@ WSGI_APPLICATION = 'multiuser_app.wsgi.application'
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
-DATABASES = MYSQL
+DATABASES = MY_DATABASE
 
 
 # Password validation
