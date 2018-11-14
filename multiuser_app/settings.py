@@ -13,12 +13,11 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 import datetime
 
-global FLAG
 FLAG = True
 try:
     from .third_party_settings import *
 except Exception:
-    FLAG = True
+    FLAG = False
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,11 +30,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'o&d_1p0-wd@*co2ccvjxqom-rzk0c%wy%ite0jd$2ayt(#&dg='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = FLAG
 
 ALLOWED_HOSTS = ["ashwani64.pythonanywhere.com", "127.0.0.1", "localhost"]
 
 
+DATABASES = SQL
 # Application definition
 
 INSTALLED_APPS = [
@@ -97,7 +97,6 @@ WSGI_APPLICATION = 'multiuser_app.wsgi.application'
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
-DATABASES = MY_DATABASE
 
 
 # Password validation
@@ -137,10 +136,10 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static')
-# ]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
@@ -237,7 +236,7 @@ AUTH_USER_MODEL = 'blog.User'
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'post_list'
+LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
 REST_FRAMEWORK = {

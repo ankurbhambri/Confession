@@ -29,11 +29,6 @@ from blog import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('blog/', include('django.contrib.auth.urls')),
-    # path(
-    #     'blog/signup/',
-    #     views.SignUpView.as_view(),
-    #     name='signup'
-    # ),
     path(
         'blog/signup/editor/',
         views.EditorSignUpView.as_view(),

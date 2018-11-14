@@ -19,9 +19,7 @@
                         </p>
                         <p>Owner of this blog: {{ post.owner|title }}</p>
                     </div>
-                    <p>
                         {{ post.text|safe|truncatechars:255 }}
-                    </p>
                     <a class="anchor" href="{% url 'post_detail' pk=post.pk %}">continue reading</a>
                 </div>
             </div>
