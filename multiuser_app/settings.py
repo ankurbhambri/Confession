@@ -35,7 +35,16 @@ DEBUG = FLAG
 ALLOWED_HOSTS = ["ashwani64.pythonanywhere.com", "127.0.0.1", "localhost"]
 
 
-DATABASES = SQL
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'confession',
+        'USER': 'root',
+        'PASSWORD': 'ashwani1',
+        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
+    }
+}
 # Application definition
 
 INSTALLED_APPS = [
