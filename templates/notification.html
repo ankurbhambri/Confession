@@ -32,12 +32,14 @@ document.getElementById("notify-count").value = "11";
         </li>
         <ul class="timeline timeline-icons timeline-sm" style="margin:10px;width:210px">
             {% for notify in notifications %}
-                <li>
-                    <p>
-                        <span class="timeline-icon"><i class="fa fa-file-text-o" style="color:red"></i></span>
-                        <span>{{notify}}</span>
-                    </p>
-                </li>
+                    <li>
+                        <p>
+                            <span class="timeline-icon"><i class="fa fa-file-text-o" style="color:#009688"></i></span>
+                            <span>
+                                <a href="{% url 'post_detail' pk=notify.blog.id %}">{{ notify.verb }}</a>
+                            </span>
+                        </p>
+                    </li>
             {% endfor %}
         </ul>
         <li role="presentation">

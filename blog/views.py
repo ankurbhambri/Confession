@@ -25,14 +25,13 @@ class HomeView(ListView):
     template_name = 'blog/view_post.html'
     model = Post
     paginate_by = 10
-    queryset = Post.objects.filter(is_approve=True)
 
     def get_queryset(self):
         # user = User.objects.get(username=self.request.user)
         return Post.objects.filter(
             is_approve=True,
             is_deleted=False
-        )
+        ).order_by('-created_date')
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
@@ -228,7 +227,8 @@ class PostApprovalView(UpdateView):
         send(
             sender=self.request.user,
             recipient=User.objects.get(id=self.object.owner_id),
-            verb=verb
+            verb=verb,
+            blog_id=Post.objects.get(id=post.id)
         )
         return reverse_lazy('post_approve_list')
 

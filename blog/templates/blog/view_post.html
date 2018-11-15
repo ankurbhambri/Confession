@@ -14,9 +14,11 @@
                         </a>
                     {% endif %}
                     <div class='date'>
-                        <p>Published on: {{ post.published_date }}
-                            {% if post.is_approve %} &#x2713; {% else %} &#10007; {% endif %}
-                        </p>
+                        <span>Published on:
+                            {{ post.published_date }}
+                                {% if post.is_approve %} &#x2713; {% else %} &#10007; {% endif %}
+                            
+                        </span>
                         <p>Owner of this blog: {{ post.owner|title }}</p>
                     </div>
                         {{ post.text|safe|truncatechars:255 }}

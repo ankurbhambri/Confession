@@ -1,12 +1,9 @@
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-
 from django.conf import settings
 
-
-# class ActivityType(models.Model):
-#     activity_type = 
+from blog.models import Post
 
 
 class Notification(models.Model):
@@ -20,6 +17,7 @@ class Notification(models.Model):
     verb = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+    blog = models.ForeignKey(Post, on_delete=models.CASCADE)
 
     unread = models.BooleanField(default=True, blank=False)
     deleted = models.BooleanField(default=False)
