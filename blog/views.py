@@ -228,7 +228,7 @@ class PostApprovalView(UpdateView):
             sender=self.request.user,
             recipient=User.objects.get(id=self.object.owner_id),
             verb=verb,
-            blog_id=Post.objects.get(id=post.id)
+            blog_id=post.id
         )
         return reverse_lazy('post_approve_list')
 
