@@ -1,0 +1,52 @@
+{% block navigation %}
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'home' %}">CONFESSION</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        Menu
+        <i class="fas fa-bars"></i>
+      </button>
+    {% if user.is_authenticated %}
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'post_list' %}">My Blogs</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"href="{% url 'post_approve_list' %}">Blogs to Approve</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'user_approved' %}">Blogs I Approved</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Log out</a>
+              </li>
+            </ul>
+            {% block notification %}
+              {% include 'notification.html' %}
+            {% endblock %}
+          </div>
+        </div>
+      </nav>
+    {% else %}
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">LogIn</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'editor_signup' %}">Sign up as Editor</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'chief_signup' %}">Sign up as Moderator</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    {% endif %}
+    <br>
+    <br>
+    <br>
+    <br>
+{% endblock %}

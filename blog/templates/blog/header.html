@@ -1,50 +1,18 @@
 
 {% block header %}
 
-<div class="container">
-    {% if user.is_authenticated %}
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="/">Confession</a>
-                </div>
-                <ul class="nav navbar-nav">
-                    <li><a href="{% url 'post_list' %}">My Blogs</a></li>
-                    <li><a>Logged in as <strong>{{ user.username }}</strong></a></li>
-                    <li><a href="{% url 'post_approve' %}">Blogs to Approve</a></li>
-                    <li><a href="{% url 'logout' %}">Log out</a></li>
-                </ul>
+    <header class="masthead" style="background-image: url('img/home-bg.jpg')">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="site-heading">
+              <h1>Clean Blog</h1>
+              <span class="subheading">A Blog Theme by Start Bootstrap</span>
             </div>
-        </nav>
-            {% if user.is_editor %}
-                <p>I am Editor</p>
-            {% else %}
-                <p>I am Moderator</p>
-            {% endif %}
-        <a class="btn btn-default" href="{% url 'post' %}">Add New Blog</a>
-        {% if post.owner == user %}
-            <a class="btn btn-default" href="{% url 'post_update' pk=post.pk %}">Edit</a>
-            <form action="{% url 'post_delete' post.pk %}" method="post">{% csrf_token %}
-                <button class="btn btn-default" id="confirm-delete">Delete</button>
-            </form>
-        {% endif %}
-    {% else %}
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="/">Confession</a>
-                </div>
-                <ul class="nav navbar-nav">
-                    <li><a href="{% url 'login' %}">Log in as Editor</a></li>
-                    <li><a href="{% url 'login' %}">Log in as Moderator</a></li>
-                    <li><a href="{% url 'editor_signup' %}">Sign up as Editor</a></li>
-                    <li><a href="{% url 'chief_signup' %}">Sign up as Moderator</a></li>
-                </ul>
-            </div>
-        </nav>
-    {% endif %}
-    {% block content %}
-    {% endblock %}
-</div>
+          </div>
+        </div>
+      </div>
+    </header>
 
 {% endblock %}

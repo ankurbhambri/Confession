@@ -1,36 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="post">
-        <h1 class="title" align="center">{{ post.title }}</h1>
-        <p>Published on: {{ post.published_date }}
-            {% if post.is_approve %} &#x2713; {% endif %}
-        </p>
-        <p>{{ post.owner|title }}</p>
-        <p>{{ post.text|safe }}</p>
-    </div>
-    <hr>
-    <div class="comment" align="left">
-        <h1 class="title">Comments</h1>
-        <form method="POST" class="form-comment" id="form-comment">
-            {% csrf_token %}  
-            <div class="block-streamText" style="width:40%;">
-                <div class="postArticle postArticle--short">
-                    {{ form }}
-                    <button type="submit" class="save btn btn-default">Submit</button>
-                </div>
-            </div>
-            <!-- <button type="submit" class="save btn btn-default">Submit</button> -->
-        </form>
-    </div>
-    <hr>
-    <div class="show-comment">
-        {% for comment in comments %}
-                <p>
-                    <b>{{ comment.0|title }}: </b>
-                    {{comment.1}}
-                    <a class="anchor" href="{% url 'comment_reply' pk=comment.2 %}">reply</a>
-                </p>
-        {% endfor %}
-    </div>
-    
+    <article>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <h1 class="title" align="center">{{ post.title|title }}</h1>
+            <i>
+                Posted by <a>{{ post.owner|title }}</a> on {{ post.published_date|date:'d-m-Y' }}
+                {% if post.is_approve %} &#x2713; {% else %} &#10007; {% endif %}
+            </i>
+            {{ post.text|safe }}
+          </div>
+        </div>
+      </div>
+    </article>
 {% endblock %}

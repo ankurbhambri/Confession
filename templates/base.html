@@ -1,80 +1,59 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>Multi-User Blogger</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Clean Blog - Start Bootstrap Theme</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="{% static 'css/clean-blog.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/notification.css' %}">
-    <script>hljs.initHighlightingOnLoad();</script>
+    {{ form.media }}
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    {% block navigation %}
+        {% include 'navigation.html' %}
+    {% endblock %}
+    
+
+    <!-- Main Content -->
+    {% block content %}
+    {% endblock %}
+
+    <!-- Footer -->
+    {% block footer %}
+        {% include 'footer.html' %}
+    {% endblock %}
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="{% static 'js/clean-blog.min.js' %}"></script>
     <script type="text/javascript">
         $(document).on('click', '#confirm-delete', function(){
             return confirm('Are you sure you want to delete this?');
         })
     </script>
-    {{ form.media }}
-</head>
-<body>
-    <div class="container">
-        {% if user.is_authenticated %}
-            <nav class="navbar-collapse text-center">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="/">Confession</a>
-                    </div>
-                    <ul class="nav navbar-nav navbar-right pull-left">
-                        <li><a href="{% url 'post_list' %}">My Blogs</a></li>
-                        {% if user.is_chief %}
-                            <li><a href="{% url 'post_approve_list' %}">Blogs to Approve</a></li>
-                            <li><a href="{% url 'user_approved' %}">Blogs I Approved</a></li>
-                        {% endif %}
-                        <li><a href="{% url 'logout' %}">Log out</a></li>
-                    </ul>
-                    {% block notification %}
-                         {% include 'notification.html' %}
-                    {% endblock %}
-            </nav>
-                {{ user.username }}
-                {% if user.is_editor %}
-                    : Editor
-                {% else %}
-                    : Moderator
-                {% endif %}
-                <span class="align-right">
-                    <a style="float:right" class="btn btn-default" href="{% url 'post' %}">Add New Blog</a>
-                </span>
-                <br>
-            {% if post.owner == user %}
-                <a class="btn btn-default" href="{% url 'post_update' pk=post.pk %}">Edit</a>
-                <form action="{% url 'post_delete' post.pk %}" method="post">{% csrf_token %}
-                    <button class="btn btn-default" id="confirm-delete">Delete</button>
-                </form>
-            {% endif %}           
-        {% else %}
-            <nav class="navbar-collapse text-center">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="/">Confession</a>
-                </div>
-                <ul class="nav navbar-nav">
-                    <li><a href="{% url 'login' %}">Log in as Editor</a></li>
-                    <li><a href="{% url 'login' %}">Log in as Moderator</a></li>
-                    <li><a href="{% url 'editor_signup' %}">Sign up as Editor</a></li>
-                    <li><a href="{% url 'chief_signup' %}">Sign up as Moderator</a></li>
-                </ul>
-            </nav>
-        {% endif %}
-        {% block content %}
-        {% endblock %}
-    </div>
-    {% block footer %}
-        {% include 'blog/footer.html' %}
-    {% endblock %}
+    <script>hljs.initHighlightingOnLoad();</script>
 
-</body>
+  </body>
+
 </html>

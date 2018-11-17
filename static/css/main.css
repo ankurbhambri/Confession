@@ -24,3 +24,11 @@ button[class="btn btn-default"] {
     font-weight: bold
 }
 span.align-right { text-align:right; }
+
+div#login {
+    padding-left: 550px;
+}
+
+div.login-btn {
+    text-align: center;
+}
