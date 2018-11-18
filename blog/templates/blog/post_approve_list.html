@@ -1,54 +1,49 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="w3-main" style="margin-left:250px width:200%;max-width:1000px;box-shadow:1 border-style: outset;border-width: medium;">
-    {% if postApprove %}
-            {% for post in postApprove %}
-                <div class="w3-row" style="border-style: outset;border-width: medium;">
-                    <div class="w3-twothird w3-container">
-                        <h1 class="w3-text-teal">
-                            <a class="title" href="{% url 'post_detail' pk=post.pk %}">{{ post.title|title }}</a>
-                        </h1>
-                        <a class="anchor" href="{% url 'post_approve' pk=post.pk %}">
-                            {% if post.is_approve %}
-                                Approved
-                            {% else %}
-                                Not Approve {% if post.is_approve %} &#10007; {% endif %}
-                            {% endif %}
-                        </a>
-                        <div class='date'>
-                            <p>
-                                Published on: {{ post.published_date }}
-                                {% if post.is_approve %}
-                                    <a class="anchor" href="{% url 'post_approve' pk=post.pk %}">&#x2713;</a>
-                                {% else %}
-                                    &#10007;
-                                {% endif %}
-                            </p>
-                            <p>Publisher: {{ post.owner|title }}</p>
-                        </div>
-                        <p>{{ post.text|safe|truncatechars:255 }}<a class="anchor" href="{% url 'post_detail' pk=post.pk %}">continue reading</a></p>
-                    </div>
-                </div>
-                <br/>
-            {% endfor %}
+    {% if postApprove %}            
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                {% for post in postApprove %}
+                  <div class="post-preview" id="post-detail">
+                    <a href="{% url 'post_detail' pk=post.pk %}">
+                      <h2 class="post-title">
+                        {{ post.title|title }}
+                      </h2>
+                      <p class="post-subtitle">
+                        {{ post.text|safe|truncatechars:56 }}
+                      </p>
+                    </a>
+                    <p class="post-meta"> Posted by <a>{{ post.owner|title }}</a> on {{ post.published_date|date:'d-m-Y' }}{% if post.is_approve %} &#x2713; {% else %} &#10007; {% endif %}</p>
+                  </div>
+                  <hr>
+                {% endfor %}
+            </div>
+          </div>
+        </div>
+        <br/>
     {% else %}
         <p align="center">No blogs to approve.</p>
     {% endif %}
     </div>
-    {% if is_paginated %}
-        <div class="pagination" style="padding-left: 452px;">
-            <span class="page-links">
-                {% if page_obj.has_previous %}
-                    <a class="anchor" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-                {% endif %}
-                <span class="page-current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+
+     <!-- Pager -->
+    <div class="clear">
+        {% if is_paginated %}
+            <div class="paginate" style="text-align: center;">
+                <span class="page-links">
+                    {% if page_obj.has_previous %}
+                        <a class="btn" href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+                    <span class="page-current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+                    {% if page_obj.has_next %}
+                        <a class="btn" href="?page={{ page_obj.next_page_number }}">next</a>
+                    {% endif %}
                 </span>
-                {% if page_obj.has_next %}
-                    <a class="anchor" href="?page={{ page_obj.next_page_number }}">Next</a>
-                {% endif %}
-            </span>
-        </div>
-    }
-{% endif %}
+            </div>
+        {% endif %}
+    </div> 
+
 {% endblock %}

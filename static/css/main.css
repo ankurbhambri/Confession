@@ -40,6 +40,15 @@ textarea {
     left: 650px;
     width: 30px;
 }
+
+li#author-name {
+    padding: 0px;
+    transition: .5s ease;
+    top: 33px;
+    left: 1000px;
+    width: 159px;
+}
+
 span.align-right { text-align:right; }
 
 div#login {

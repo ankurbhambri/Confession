@@ -21,6 +21,9 @@
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'logout' %}">Log out</a>
               </li>
+              <li class="nav-item">
+                <a class="link">{{ user|title }}<i class="fas fa-crown"></i></a>
+              </li>
             </ul>
             {% block notification %}
               {% include 'notification.html' %}
