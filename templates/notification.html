@@ -14,7 +14,7 @@ $(document).ready(function(){
 <div class="dropdown" style="float: right; padding: 13px">
 
     <a href="" onclick="return false;" role="button" data-toggle="dropdown" id="dropdownMenu1" data-target="home" style="float: left" aria-expanded="true">
-        <i class="fa fa-bell-o" style="font-size: 20px; float: left; color: black">
+        <i class="fa fa-bell" style="font-size: 20px; float: left; color: black">
         </i>
     </a>
     <span id="notify-count" class="badge badge-danger">
@@ -32,7 +32,7 @@ $(document).ready(function(){
             {% for notify in notifications %}
                     <li>
                         <p>
-                            <span class="timeline-icon"><i class="fa fa-file-text-o" style="color:#009688"></i></span>
+                            <span class="timeline-icon"><i class="far fa-file-alt" style="color:#009688"></i></span>
                             <span>
                                 <a href="{% url 'post_detail' pk=notify.blog.id %}">{{ notify.verb }}</a>
                             </span>

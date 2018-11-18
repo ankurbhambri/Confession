@@ -24,7 +24,7 @@ from notifications.signals import send, recieve
 class HomeView(ListView):
     template_name = 'blog/view_post.html'
     model = Post
-    paginate_by = 2
+    paginate_by = 10
 
     def get_queryset(self):
         # user = User.objects.get(username=self.request.user)

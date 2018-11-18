@@ -15,13 +15,30 @@ textarea {
     border-radius: 5px;
     resize: vertical;
 }
-a[class="btn btn-default"] {
+#edit-post {
     color: #009688;
-    font-weight: bold
+    font-weight: bold;
+    padding: 0px;
+    border: 0;
+    background: 0;
+    position: absolute;
+    transition: .5s ease;
+    top: 67px;
+    left: 610px;
+    width: 30px;
 }
-button[class="btn btn-default"] {
-    color: #009688;
-    font-weight: bold
+
+#confirm-delete {
+    color: red;
+    font-weight: bold;
+    padding: 0px;
+    border: 0;
+    background: 0;
+    position: absolute;
+    transition: .5s ease;
+    top: 58px;
+    left: 650px;
+    width: 30px;
 }
 span.align-right { text-align:right; }
 
@@ -46,7 +63,7 @@ div.login-btn {
   color: #868e96;
 }
 
-div#post-detail>p.post-metaa>a {
+div#post-detail>p.post-metaa>a.author-name {
   text-decoration: none;
   color: #212529;
 }
