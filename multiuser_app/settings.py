@@ -180,6 +180,12 @@ CKEDITOR_CONFIGS = {
                           'HiddenField'
                           ]
             },
+            {
+                'name': 'insert',
+                'items': ['Image', 'Flash', 'Table', 'HorizontalRule',
+                          'Smiley', 'SpecialChar', 'PageBreak', 'Iframe'
+                          ]
+            },
             '/',
             {
                 'name': 'basicstyles',
@@ -200,16 +206,9 @@ CKEDITOR_CONFIGS = {
                 'name': 'links',
                 'items': ['Link', 'Unlink', 'Anchor']
             },
-            {
-                'name': 'insert',
-                'items': ['Image', 'Flash', 'Table', 'HorizontalRule',
-                          'Smiley', 'SpecialChar', 'PageBreak', 'Iframe'
-                          ]
-            },
+            
             '/',
             {'name': 'codesnippet', 'items': ['CodeSnippet']},
-            '/',
-            '/',  # put this to force next toolbar on new line
             {'name': 'yourcustomtools', 'items': [
                 # put the name of your editor.ui.addButton here
                 'Preview',
@@ -236,6 +235,8 @@ CKEDITOR_CONFIGS = {
             # 'dialogui',
             # 'elementspath'
         ]),
+        'height': 600,
+        'width': 1300,
     }
 }
 CKEDITOR_BROWSE_SHOW_DIRS = False

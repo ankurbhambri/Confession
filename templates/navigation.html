@@ -12,17 +12,23 @@
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'post_list' %}">My Blogs</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link"href="{% url 'post_approve_list' %}">Blogs to Approve</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'user_approved' %}">Blogs I Approved</a>
-              </li>
+              {% if user.is_chief %}
+                <li class="nav-item">
+                  <a class="nav-link"href="{% url 'post_approve_list' %}">Blogs to Approve</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'user_approved' %}">Blogs I Approved</a>
+                </li>
+              {% endif %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'logout' %}">Log out</a>
               </li>
               <li class="nav-item">
-                <a class="link">{{ user|title }}<i class="fas fa-crown"></i></a>
+                <a class="link">{{ user|title }}
+                  {% if user.is_chief %}
+                    <i class="fas fa-crown"></i>
+                  {% endif %}
+                </a>
               </li>
             </ul>
             {% block notification %}

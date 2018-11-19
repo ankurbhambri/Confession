@@ -1,26 +1,32 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="post">
-            {% for p in post%}
-                <a class="title" href="{% url 'post_detail' pk=p.1%}">
-                    <h2 class="title">Comments for the Post {{p.0|title}}</h2>
-                </a>
-            {% endfor %}
-        <p>{{ comment.comment|safe }}</p>
-    </div>
+    <article>
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto" id="post-detail">
+                {% for p in post%}
+                    <a class="title" href="{% url 'post_detail' pk=p.1%}">
+                        <h1 class="title">Comments for the Post {{p.0|title}}</h1>
+                    </a>
+                {% endfor %}
+                {{ comment.comment|safe }}
+            </div>
+          </div>
+        </div>
+    </article>
     <hr>
-    <div class="comment" align="left">
+    <div class="comment">
         <h1 class="title">Responses</h1>
-        <form method="POST" class="form-comment">
+        <form method="POST" class="form-comment" id="form-comment">
             {% csrf_token %}  
-            <div class="block-streamText" style="width:40%;">
+            <div class="block-streamText"">
                 <div class="postArticle postArticle--short">
                     {{ form }}
-                    <button type="submit" class="save btn btn-default">Submit</button>
                 </div>
             </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-    </div>
+  </div>
     <hr>
     <div class="show-comment">
         {% for r in reply %}
@@ -30,3 +36,4 @@
         {% endfor %}
     </div>
 {% endblock %}
+

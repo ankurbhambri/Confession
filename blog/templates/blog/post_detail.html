@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-  <div class="icon-bar">
+ <!--  <div class="icon-bar">
     <a><i class="fas fa-thumbs-up"></i></a>
     <a><i class="fas fa-thumbs-down"></i></a>    
-  </div>
+  </div> -->
 
   <article>
     <div class="container">
@@ -28,28 +28,26 @@
   <hr>
 
   <div class="comment">
-        <h1 class="title">Comments</h1>
-        <form method="POST" class="form-comment" id="form-comment">
-            {% csrf_token %}  
-            <div class="block-streamText"">
-                <div class="postArticle postArticle--short">
-                    {{ form }}
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
+    <h1 class="title">Comments</h1>
+    <form method="POST" class="form-comment" id="form-comment">
+        {% csrf_token %}  
+        <div class="block-streamText"">
+            <div class="postArticle postArticle--short">
+                {{ form }}
             </div>
-        </form>
-    </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
     <hr>
     <div class="show-comment">
         {% for comment in comments %}
-                <p>
-                    <b>{{ comment.0|title }}: </b>
-                    {{comment.1}}
-                    <a class="anchor" href="{% url 'comment_reply' pk=comment.2 %}">reply</a>
-                </p>
+          <p>
+            <b>{{ comment.0|title }}: </b>
+            {{comment.1}}
+            <a class="anchor" href="{% url 'comment_reply' pk=comment.2 %}">reply</a>
+          </p>
         {% endfor %}
     </div>
-
-
-
 {% endblock %}
+

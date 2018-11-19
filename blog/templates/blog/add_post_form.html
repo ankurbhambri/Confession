@@ -3,21 +3,21 @@
 
 {% block content %}
     {% if post.owner == user %}
-        <h1>Edit Post</h1>
+        <h3>Edit Post</h3>
     {% elif not post.owner%}
         <h1>New post</h1>
     {% endif %}
-    <form method="POST" class="post-form">
-             {% csrf_token %}
-                <p>Owner: {{ user|title }}</p>
-                {% for field in form %}
-                    {{ field.errors }}
-                    <!-- <div id="froala-editor"> -->
-                    <label for="lname">{{ field.label_tag }}</label>
-                    <!-- </div> -->
-                    {{ field }}
-                    <br/>
-                {% endfor %}
+    <div class="post-edit">
+        <form method="POST" class="post-form">
+            {% csrf_token %}
+            {% for field in form %}
+                {{ field.errors }}
+                <!-- <div id="froala-editor"> -->
+                <!-- </div> -->
+                {{ field }}
+                <br/>
+            {% endfor %}
             <button type="submit" class="save btn btn-default">Save</button>
         </form>
+    </div>
 {% endblock %}

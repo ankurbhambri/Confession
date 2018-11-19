@@ -40,6 +40,14 @@ class Post(models.Model):
         self.is_deleted = True
         self.save()
 
+    def save(self, *args, **kwargs):
+        self.full_clean()  # performs regular validation then clean()
+        super(Post, self).save(*args, **kwargs)
+
+    def clean(self):
+        self.text = self.text.strip()
+        print(self.text)
+
     class Meta:
         ordering = ["-created_date"]
 

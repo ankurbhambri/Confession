@@ -65,6 +65,15 @@ div.login-btn {
     text-align: center;
 }
 
+div.post-edit {
+  padding-left: 12px;
+  font-size: 14px;
+}
+
+#id_title {
+  width: 500px;
+}
+
 .post-metaa {
   font-size: 18px;
   font-style: italic;
@@ -187,11 +196,17 @@ button:hover {
     padding-right: 600px;
 }
 
-#id_comment {
+#id_comment, #id_reply {
   width: 500px;
   height: 150px;
 }
 
 .btn-primary {
-    width:120px; 
+    width: 160px; 
+}
+.post {
+  margin-top: 30px;
+  margin-right: 0px;
+  margin-bottom: 30px;
+  margin-left: 0px;
 }

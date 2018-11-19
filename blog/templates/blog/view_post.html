@@ -13,9 +13,9 @@
                   <h2 class="post-title">
                     {{ post.title|title }}
                   </h2>
-                  <p class="post-subtitle">
+                 <!--  <p class="post-subtitle">
                     {{ post.text|safe|truncatechars:56 }}
-                  </p>
+                  </p> -->
                 </a>
                 <p class="post-meta"> Posted by <a>{{ post.owner|title }}</a> on {{ post.published_date|date:'d-m-Y' }}{% if post.is_approve %} &#x2713; {% else %} &#10007; {% endif %}</p>
               </div>
