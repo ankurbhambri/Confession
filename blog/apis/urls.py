@@ -1,4 +1,5 @@
 from django.urls import path
+from rest_framework.documentation import include_docs_urls
 
 from .account_views import (RegisterationView, LoginView)
 from .blog_views import (
@@ -30,12 +31,14 @@ notification = NotificationView.as_view({
 })
 
 urlpatterns = [
-    # path('', include(router.urls)),
+    path('docs', include_docs_urls(
+        title='Blogs API Docs'
+    )),
     path('register', RegisterationView.as_view(), name='api-register'),
     path('login', LoginView.as_view(), name='api-login'),
 
     path('blogs', HomeView.as_view({'get': 'list'}), name='api-home'),
-    path('create-blog', CreateBlogView.as_view(), name='api-create-blog'),
+    path('create-blog', CreateBlogView.as_view({'post': 'create'}), name='api-create-blog'),
     path('myblog', post_list, name='api-myblog'),
     path(
         'blog/<int:pk>',

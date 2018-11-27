@@ -81,6 +81,14 @@ class LoginSerializer(serializers.Serializer):
     )
 
 
+class PostApprovalFormSerializer(serializers.ModelSerializer):
+    is_approve = serializers.BooleanField(help_text="Boolean value")
+
+    class Meta:
+        model = Post
+        fields = ('is_approve',)
+
+
 class BlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
@@ -89,14 +97,29 @@ class BlogSerializer(serializers.ModelSerializer):
 
 class BlogCreateSerializer(serializers.ModelSerializer):
 
-    title = serializers.CharField(max_length=255, trim_whitespace=True)
-    text = serializers.CharField(allow_blank=False, trim_whitespace=True)
-    owner_id = serializers.ModelField(
-        model_field=User()._meta.get_field('id')
+    title = serializers.CharField(
+        max_length=255,
+        trim_whitespace=True,
+        help_text="Title of blog"
     )
-    request_from = serializers.CharField(max_length=10, default='api')
+    text = serializers.CharField(
+        allow_blank=False,
+        trim_whitespace=True,
+        help_text="Text/Content of blog"
+    )
+    owner_id = serializers.ModelField(
+        model_field=User()._meta.get_field('id'),
+        required=False,
+        help_text="UserId of current user. (optional)"
+    )
+    request_from = serializers.CharField(
+        max_length=10,
+        default='api',
+        read_only=True
+    )
 
     def create(self, validated_data):
+        validated_data
         post = Post.objects.create(**validated_data)
         return post
 

@@ -29,7 +29,7 @@
 
   <div class="comment">
     <h1 class="title">Comments</h1>
-    <form method="POST" class="form-comment" id="form-comment">
+    <form method="POST" class="form-comment" id="form-comment" data-validate-url='/post/{{post.id}}' data-validate-username='{{ user.username|title }}' >
         {% csrf_token %}  
         <div class="block-streamText"">
             <div class="postArticle postArticle--short">
@@ -40,14 +40,25 @@
     </form>
   </div>
     <hr>
+    <div class="show-comment" id="show-comment">
+    </div>
     <div class="show-comment">
         {% for comment in comments %}
-          <p>
-            <b>{{ comment.0|title }}: </b>
-            {{comment.1}}
-            <a class="anchor" href="{% url 'comment_reply' pk=comment.2 %}">reply</a>
-          </p>
+          <div class="panel panel-default arrow left">
+            <div class="panel-body">
+              <div class="comment-user"><i class="fa fa-user"></i> {{ comment.0|title }}
+                <a class="text-right" href="{% url 'comment_reply' pk=comment.2 %}"><i class="fa fa-reply"></i> reply</a>
+              </div>
+              <div class="comment-post">
+                <p>
+                  <span>{{ comment.1|truncatechars:56 }}</span>
+                </p>
+              </div>
+              <!-- <p class="text-right"><a href="#" class="btn btn-default btn-sm"><i class="fa fa-reply"></i> reply</a></p> -->
+            </div>
+          </div>
         {% endfor %}
     </div>
+    
 {% endblock %}
 

@@ -19,7 +19,12 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 class HomeView(viewsets.ModelViewSet):
     '''
-        API to list all the approved blogs
+    API to list all the approved blogs.
+
+        endpoints: /api/blogs
+        Method: GET
+        Returns:
+            List of all Approved Blogs
     '''
     permission_classes = (permissions.AllowAny,)
 
@@ -27,35 +32,42 @@ class HomeView(viewsets.ModelViewSet):
     serializer_class = BlogSerializer
 
 
-class CreateBlogView(APIView):
+class CreateBlogView(viewsets.ModelViewSet):
     '''
-        API to create a new blog
+    API to create a new blog.
+
+        endpoints: /api/create-blog
+        Method: POST
+        * Login required
+        Args:
+            title: title of blog
+            text:  text/content of blog
+        Returns:
+            title: title of blog
+            text:  text/content of blog
+            owner_id: owner id of blog
+            request_from: api or tempalte(defaults: api)
     '''
 
     permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = BlogCreateSerializer
 
-    def post(self, request):
+    def create(self, request):
         try:
-            data = request.data
+            request_data = request.data
             auth_keyword, token = get_authorization_header(request).split()
             user = JWT_DECODE_HANDLER(token).get('user_id', None)
-            data['owner_id'] = user
+            request_data['owner_id'] = user
+            request_data['request_from'] = 'api'
             user = User.objects.get(id=user)
-            serializer = BlogCreateSerializer(data=data)
+            serializer = BlogCreateSerializer(data=request_data)
             if serializer.is_valid():
                 post = serializer.save()
                 if post:
-                    data = {
-                        'token': JWT_ENCODE_HANDLER(JWT_PAYLOAD_HANDLER(user)),
-                        'username': JWT_DECODE_HANDLER(token).get('username'),
-                        'success': True
-                    }
-                    serializer = TokenSerializer(data=data)
-                    if serializer.is_valid():
-                        return Response(
-                            serializer.data,
-                            status=status.HTTP_201_CREATED
-                        )
+                    return Response(
+                        serializer.data,
+                        status=status.HTTP_201_CREATED
+                    )
             else:
                 return Response(
                     {"success": False, "error": serializer.errors},
@@ -70,7 +82,13 @@ class CreateBlogView(APIView):
 
 class PostListView(viewsets.ModelViewSet):
     '''
-        API to show list of blogs of loggedIn user
+    API to show list of blogs of current user.
+
+        endpoints: /api/myblog
+        Method: GET
+        * Login required
+        Returns:
+            List of all blogs of current user.
     '''
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = BlogSerializer
@@ -83,10 +101,10 @@ class PostListView(viewsets.ModelViewSet):
 
 class PostDetailView(viewsets.ViewSet):
     '''
-        API for multiple uses described as follows:
-          - retrieve(GET): retrive selected blog
-          - update(PUT): update selected blog
-          - destroy(DELETE): delete selected blog.
+    API to perform different actions on given blog.
+
+        endpoints: /api/blog/<int:pk>
+        * Login required
     '''
 
     permission_classes = (permissions.IsAuthenticated,)
@@ -94,6 +112,15 @@ class PostDetailView(viewsets.ViewSet):
     queryset = Post.objects.all()
 
     def retrieve(self, request, pk=None):
+        '''
+        Retrieve non deleted blog by default. deleted = 1 to retrieve deleted blog.
+
+            Method: GET
+            Args:
+                deleted: (optional: default 0)1 or 0
+            Returns:
+                full blog related response.
+        '''
         auth_keyword, token = get_authorization_header(self.request).split()
         user = JWT_DECODE_HANDLER(token).get('user_id', None)
         try:
@@ -110,29 +137,44 @@ class PostDetailView(viewsets.ViewSet):
         return Response(serializer.data)
 
     def update(self, request, pk=None):
+        '''
+        Update the updated blog.
+
+            Method: PUT
+            Args:
+                title: title of blog
+                text:  text/content of blog
+            Returns:
+                full blog related response.
+        '''
         auth_keyword, token = get_authorization_header(self.request).split()
         user = JWT_DECODE_HANDLER(token).get('user_id', None)
         user = User.objects.get(id=user)
-        Post.objects.filter(owner_id=user, pk=pk).update(**request.data)
-        data = {
-            'token': JWT_ENCODE_HANDLER(JWT_PAYLOAD_HANDLER(user)),
-            'username': JWT_DECODE_HANDLER(token).get('username'),
-            'success': True
-        }
-        serializer = TokenSerializer(data=data)
-        if serializer.is_valid():
+        q = Post.objects.filter(owner_id=user, is_deleted=False)
+        queryset = get_object_or_404(q, pk=pk)
+
+        # Update the blog
+        is_updated = Post.objects.filter(
+            owner_id=user, pk=pk).update(**request.data)
+        if is_updated:
+            serializer = BlogSerializer(queryset)
             return Response(serializer.data)
-        else:
-            return Response(data)
 
     def destroy(self, request, pk=None):
+        '''
+        Delete blog of given blog id.
+
+            Method: DELETE
+            Returns:
+                username: current user
+                success: success status
+        '''
         auth_keyword, token = get_authorization_header(self.request).split()
         user = JWT_DECODE_HANDLER(token).get('user_id', None)
         user = User.objects.get(id=user)
         try:
             Post.objects.get(owner_id=user, pk=pk, is_deleted=False).delete()
             data = {
-                'token': JWT_ENCODE_HANDLER(JWT_PAYLOAD_HANDLER(user)),
                 'username': JWT_DECODE_HANDLER(token).get('username'),
                 'success': True
             }
@@ -153,7 +195,16 @@ class PostDetailView(viewsets.ViewSet):
 class PostApprovalListView(viewsets.ModelViewSet):
     '''
     API to list of all post that need to be approved or allready approved.
-    is_approve = True/False
+
+        endpoints: /api/approval-list
+        Method: GET
+        * Login required
+        Args:
+            is_approve: (optional)Boolean
+                - True: For all approved blogs
+                - False: For all non-approved blogs
+        Returns:
+            List of all Approved Blogs
     '''
     permission_classes = (
         permissions.IsAuthenticated,
@@ -162,18 +213,33 @@ class PostApprovalListView(viewsets.ModelViewSet):
     serializer_class = BlogSerializer
 
     def get_queryset(self):
-        approve_flag = True if self.request.GET.get('is_approve', False) == 'true' else False
+        approve_flag = True if self.request.GET.get(
+            'is_approve', False) == 'true' else False
         return Post.objects.filter(is_approve=approve_flag)
 
 
 class PostApprovalFormView(viewsets.ModelViewSet):
     '''
-        API to approve the blog.
+    API to approve blog by moderator.
+
+        endpoints: /api/approve/<int:pk>
+        Method: PUT
+        * Login required
+        Args:
+            is_approve: Boolean
+                - True: To approve blog
+                - False: To unapprove blog
+        Returns:
+            username: current user
+            success: success http_status
     '''
     permission_classes = (
         permissions.IsAuthenticated,
         ChiefRequiredPermission,
     )
+
+    serializer_class = PostApprovalFormSerializer
+    queryset = Post.objects.all()
 
     def update(self, request, pk=None):
         auth_keyword, token = get_authorization_header(self.request).split()
@@ -185,7 +251,6 @@ class PostApprovalFormView(viewsets.ModelViewSet):
             post.is_approve = approve_flag
             post.save()
             data = {
-                'token': JWT_ENCODE_HANDLER(JWT_PAYLOAD_HANDLER(user)),
                 'username': JWT_DECODE_HANDLER(token).get('username'),
                 'success': True
             }
@@ -200,12 +265,22 @@ class PostApprovalFormView(viewsets.ModelViewSet):
         if serializer.is_valid():
             return Response(serializer.data, http_status)
         else:
-            return Response(data, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return Response(serializer.data, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
 class CommentView(APIView):
     '''
-    API to comment to blog
+    API to comment on blog
+
+        endpoints: /api/comment
+        Method: POST
+        * Login required
+        Args:
+            comment: Comment
+            blog_id: blog id on which comment will apply
+        Returns:
+            username: current user
+            success: success status
     '''
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -221,7 +296,7 @@ class CommentView(APIView):
                 comment = serializer.save()
                 if comment:
                     data = {
-                        'token': JWT_ENCODE_HANDLER(JWT_PAYLOAD_HANDLER(user)),
+                        # 'token': JWT_ENCODE_HANDLER(JWT_PAYLOAD_HANDLER(user)),
                         'username': JWT_DECODE_HANDLER(token).get('username'),
                         'success': True
                     }
@@ -245,7 +320,18 @@ class CommentView(APIView):
 
 class ReplyView(APIView):
     '''
-    API to reply to comment
+    API to reply on comment
+
+        endpoints: /api/reply
+        Method: POST
+        * Login required
+        Args:
+            reply: Reply
+            which_comment_id: comment id on which reply will apply
+            blog_id: blog id on which comment will apply
+        Returns:
+            username: current user
+            success: success status
     '''
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -261,7 +347,7 @@ class ReplyView(APIView):
                 reply = serializer.save()
                 if reply:
                     data = {
-                        'token': JWT_ENCODE_HANDLER(JWT_PAYLOAD_HANDLER(user)),
+                        # 'token': JWT_ENCODE_HANDLER(JWT_PAYLOAD_HANDLER(user)),
                         'username': JWT_DECODE_HANDLER(token).get('username'),
                         'success': True
                     }
@@ -284,6 +370,24 @@ class ReplyView(APIView):
 
 
 class NotificationView(viewsets.ModelViewSet):
+    '''
+    API to perform different actions on given blog.
+
+        endpoints: /api/notification
+        * Login required
+
+        - retrieve: retrive notification of current user
+            Method: GET
+            Returns:
+                List of all notification related response.
+
+        - update: notification marked as read
+            Method: PUT
+            Args:
+                blank json
+            Returns:
+                success: Boolean
+    '''
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = NotificationSerializer
 

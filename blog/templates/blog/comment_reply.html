@@ -17,7 +17,7 @@
     <hr>
     <div class="comment">
         <h1 class="title">Responses</h1>
-        <form method="POST" class="form-comment" id="form-comment">
+        <form method="POST" class="form-comment" id="form-comment" data-validate-username='{{ user.username|title }}'>
             {% csrf_token %}  
             <div class="block-streamText"">
                 <div class="postArticle postArticle--short">
@@ -28,11 +28,21 @@
         </form>
   </div>
     <hr>
+    <div class="show-comment" id="show-comment">
+    </div>
     <div class="show-comment">
         {% for r in reply %}
+          <div class="panel panel-default arrow left">
+            <div class="panel-body">
+              <div class="comment-user"><i class="fa fa-user"></i> {{ r.0|title }}
+              </div>
+              <div class="comment-post">
                 <p>
-                    <b>{{ r.0|title }}: </b> {{r.1}}
+                  <span>{{ r.1 }}</span>
                 </p>
+              </div>
+            </div>
+          </div>
         {% endfor %}
     </div>
 {% endblock %}

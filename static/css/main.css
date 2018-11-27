@@ -210,3 +210,19 @@ button:hover {
   margin-bottom: 30px;
   margin-left: 0px;
 }
+
+.show-comment{
+  padding-right: 445px;
+  padding-left: 250px;
+}
+
+
+.panel-default {
+  height: 120px;
+  font-size: 16px;
+}
+
+
+.text-right {
+    padding-left: 420px;
+}
