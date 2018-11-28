@@ -43,22 +43,34 @@ class RegisterSerializer(serializers.ModelSerializer):
         queryset=User.objects.all(),
         message='Email already exists'
     )
-    first_name = serializers.CharField(max_length=255)
-    last_name = serializers.CharField(max_length=255)
+    first_name = serializers.CharField(
+        max_length=255,
+        help_text='String contains the first name'
+    )
+    last_name = serializers.CharField(
+        max_length=255,
+        help_text='String contains the last name'
+    )
     email = serializers.EmailField(
         required=True,
         max_length=100,
-        validators=[email_check]
+        validators=[email_check],
+        help_text='A unique email'
     )
     username = serializers.CharField(
         required=True,
-        validators=[user_check]
+        validators=[user_check],
+        help_text='A unique string which identifies user'
     )
     password = serializers.CharField(
         min_length=8,
-        validators=[password_validate]
+        validators=[password_validate],
+        help_text='Password having greater than 8 character'
     )
-    is_editor = serializers.BooleanField(default=False)
+    is_editor = serializers.BooleanField(
+        default=False,
+        help_text='Boolean value for editor'
+    )
     # is_chief = serializers.BooleanField(default=False)
 
     def create(self, validated_data):
@@ -72,12 +84,15 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.Serializer):
-    email = serializers.EmailField(
+    username = serializers.CharField(
         max_length=100,
+        help_text='A unique string which identifies user'
     )
     password = serializers.CharField(
         max_length=100,
-        validators=[password_validate]
+        write_only=True,
+        validators=[password_validate],
+        help_text='Password having greater than 8 character'
     )
 
 
@@ -119,7 +134,7 @@ class BlogCreateSerializer(serializers.ModelSerializer):
     )
 
     def create(self, validated_data):
-        validated_data
+        validated_data['request_from'] = 'api'
         post = Post.objects.create(**validated_data)
         return post
 

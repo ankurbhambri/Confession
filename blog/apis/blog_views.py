@@ -99,7 +99,7 @@ class PostListView(viewsets.ModelViewSet):
         return Post.objects.filter(owner_id=user, is_approve=True)
 
 
-class PostDetailView(viewsets.ViewSet):
+class PostDetailView(viewsets.ModelViewSet):
     '''
     API to perform different actions on given blog.
 
@@ -108,7 +108,7 @@ class PostDetailView(viewsets.ViewSet):
     '''
 
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = BlogSerializer
+    serializer_class = BlogCreateSerializer
     queryset = Post.objects.all()
 
     def retrieve(self, request, pk=None):
@@ -147,18 +147,34 @@ class PostDetailView(viewsets.ViewSet):
             Returns:
                 full blog related response.
         '''
+        request_data = request.data
         auth_keyword, token = get_authorization_header(self.request).split()
         user = JWT_DECODE_HANDLER(token).get('user_id', None)
         user = User.objects.get(id=user)
-        q = Post.objects.filter(owner_id=user, is_deleted=False)
-        queryset = get_object_or_404(q, pk=pk)
+        # q = Post.objects.filter(owner_id=user, is_deleted=False)
+        # queryset = get_object_or_404(q, pk=pk)
 
-        # Update the blog
-        is_updated = Post.objects.filter(
-            owner_id=user, pk=pk).update(**request.data)
-        if is_updated:
-            serializer = BlogSerializer(queryset)
-            return Response(serializer.data)
+        request_data['owner_id'] = user.id
+        # request_data['request_from'] = 'api'
+        serializer = BlogCreateSerializer(data=request_data)
+        if serializer.is_valid():
+            post = serializer.save()
+            if post:
+                return Response(
+                    serializer.data,
+                    status=status.HTTP_201_CREATED
+                )
+        else:
+            return Response(
+                {"success": False, "error": serializer.errors},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        # # Update the blog
+        # is_updated = Post.objects.filter(
+        #     owner_id=user, pk=pk).update(**request.data)
+        # if is_updated:
+        #     serializer = BlogSerializer(queryset)
+        #     return Response(serializer.data)
 
     def destroy(self, request, pk=None):
         '''

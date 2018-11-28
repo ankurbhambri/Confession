@@ -1,21 +1,42 @@
 from django.contrib.auth import authenticate
 
-from rest_framework import status, permissions
+from rest_framework import status, permissions, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_jwt.settings import api_settings
 
-from .serializers import RegisterSerializer, TokenSerializer
+from .serializers import (
+    RegisterSerializer,
+    LoginSerializer,
+    TokenSerializer,
+)
 
 JWT_PAYLOAD_HANDLER = api_settings.JWT_PAYLOAD_HANDLER
 JWT_ENCODE_HANDLER = api_settings.JWT_ENCODE_HANDLER
 
 
-class RegisterationView(APIView):
+class RegisterationView(viewsets.ModelViewSet):
+    '''
+    API to create a new user.
 
+        endpoints: /api/register
+        Method: POST
+        Args:
+            username: Unique value that identifies user.
+            email: Unique email
+            password: Password with 8 or more character
+            first_name: First Name
+            last_name: Last Name
+            is_editor: Boolean
+        Returns:
+            username:
+            token:
+            success:
+    '''
     permission_classes = (permissions.AllowAny,)
+    serializer_class = RegisterSerializer
 
-    def post(self, request):
+    def create(self, request):
         try:
             serializer = RegisterSerializer(data=request.data)
             if serializer.is_valid():
@@ -45,11 +66,24 @@ class RegisterationView(APIView):
             )
 
 
-class LoginView(APIView):
+class LoginView(viewsets.ModelViewSet):
+    '''
+    API to login.
 
+        endpoints: /api/login
+        Method: POST
+        Args:
+            username: Unique value that identifies user.
+            password: Password with 8 or more character
+        Returns:
+            username:
+            token:
+            success:
+    '''
     permission_classes = (permissions.AllowAny,)
+    serializer_class = LoginSerializer
 
-    def post(self, request):
+    def create(self, request):
         username = request.data.get("username", "")
         password = request.data.get("password", "")
         user = authenticate(username=username, password=password)

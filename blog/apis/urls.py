@@ -34,8 +34,8 @@ urlpatterns = [
     path('docs', include_docs_urls(
         title='Blogs API Docs'
     )),
-    path('register', RegisterationView.as_view(), name='api-register'),
-    path('login', LoginView.as_view(), name='api-login'),
+    path('register', RegisterationView.as_view({'post': 'create'}), name='api-register'),
+    path('login', LoginView.as_view({'post': 'create'}), name='api-login'),
 
     path('blogs', HomeView.as_view({'get': 'list'}), name='api-home'),
     path('create-blog', CreateBlogView.as_view({'post': 'create'}), name='api-create-blog'),
