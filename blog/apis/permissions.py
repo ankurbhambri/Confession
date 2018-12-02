@@ -9,7 +9,7 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 class ChiefRequiredPermission(permissions.BasePermission):
     """
-    fix_an_appointment
+    check user type
     """
 
     def has_permission(self, request, view):

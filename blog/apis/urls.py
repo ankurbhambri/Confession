@@ -48,7 +48,7 @@ urlpatterns = [
     path('approval-list', post_approval_list, name='api-approval-list'),
     path('approve/<int:pk>', post_approve, name='api-approve'),
 
-    path('comment', CommentView.as_view(), name='api-comment'),
-    path('reply', ReplyView.as_view(), name='api-reply'),
+    path('comment', CommentView.as_view({'post': 'create'}), name='api-comment'),
+    path('reply', ReplyView.as_view({'post': 'create'}), name='api-reply'),
     path('notification', notification, name='api-notification'),
 ]

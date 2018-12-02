@@ -2,8 +2,6 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status, permissions, viewsets
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView
 from rest_framework_jwt.settings import api_settings
 from rest_framework.authentication import get_authorization_header
 
@@ -19,7 +17,7 @@ JWT_DECODE_HANDLER = api_settings.JWT_DECODE_HANDLER
 
 class HomeView(viewsets.ModelViewSet):
     '''
-    API to list all the approved blogs.
+    API to list all the approved blogs.<br>
 
         endpoints: /api/blogs
         Method: GET
@@ -113,7 +111,8 @@ class PostDetailView(viewsets.ModelViewSet):
 
     def retrieve(self, request, pk=None):
         '''
-        Retrieve non deleted blog by default. deleted = 1 to retrieve deleted blog.
+        Retrieve non deleted blog by default.
+        **deleted = 1** to retrieve deleted blog.
 
             Method: GET
             Args:
@@ -284,7 +283,7 @@ class PostApprovalFormView(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
-class CommentView(APIView):
+class CommentView(viewsets.ModelViewSet):
     '''
     API to comment on blog
 
@@ -299,8 +298,9 @@ class CommentView(APIView):
             success: success status
     '''
     permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = CommentSerializer
 
-    def post(self, request):
+    def create(self, request):
         try:
             data = request.data
             auth_keyword, token = get_authorization_header(request).split()
@@ -334,7 +334,7 @@ class CommentView(APIView):
             )
 
 
-class ReplyView(APIView):
+class ReplyView(viewsets.ModelViewSet):
     '''
     API to reply on comment
 
@@ -350,8 +350,9 @@ class ReplyView(APIView):
             success: success status
     '''
     permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = ReplySerializer
 
-    def post(self, request):
+    def create(self, request):
         try:
             data = request.data
             auth_keyword, token = get_authorization_header(request).split()
@@ -396,13 +397,6 @@ class NotificationView(viewsets.ModelViewSet):
             Method: GET
             Returns:
                 List of all notification related response.
-
-        - update: notification marked as read
-            Method: PUT
-            Args:
-                blank json
-            Returns:
-                success: Boolean
     '''
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = NotificationSerializer
@@ -411,6 +405,16 @@ class NotificationView(viewsets.ModelViewSet):
         return Notification.objects.filter(object_id=self.request.user.id)
 
     def update(self, request, pk=None):
+        '''
+        API to change read status.
+
+            - update: notification marked as read
+                Method: PUT
+                Args:
+                    {} => blank json
+                Returns:
+                    success: Boolean
+        '''
         Notification.objects.filter(
             object_id=request.user.id).update(unread=False)
         return Response({'success': True, }, status=status.HTTP_202_ACCEPTED)

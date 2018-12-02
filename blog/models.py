@@ -46,7 +46,6 @@ class Post(models.Model):
 
     def clean(self):
         self.text = self.text.strip()
-        print(self.text)
 
     class Meta:
         ordering = ["-created_date"]

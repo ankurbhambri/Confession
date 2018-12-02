@@ -1,5 +1,5 @@
 body {
-  font-size: 20px;
+  font-size: 16px;
   color: #212529;
   font-family: Lora,'Times New Roman',serif;
 }
@@ -14,8 +14,9 @@ p a {
 }
 
 h1,h2,h3,h4,h5,h6 {
-  font-weight: 800;
+  font-weight: 600;
   font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size: 26px;
 }
 
 a {
@@ -364,7 +365,7 @@ form .form-group:first-child .floating-label-form-group {
 }
 
 footer {
-  padding: 50px 0 65px;
+  padding: -1px 0 65px;
 }
 
 footer .list-inline {

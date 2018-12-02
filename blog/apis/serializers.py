@@ -145,9 +145,19 @@ class BlogCreateSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
 
-    comment = serializers.CharField(allow_blank=False, trim_whitespace=True)
-    blog_id = serializers.ModelField(model_field=Post()._meta.get_field('id'))
-    user_id = serializers.ModelField(model_field=User()._meta.get_field('id'))
+    comment = serializers.CharField(
+        allow_blank=False,
+        trim_whitespace=True,
+        help_text="String value"
+    )
+    blog_id = serializers.ModelField(
+        model_field=Post()._meta.get_field('id'),
+        help_text="blog Id on which comment will apply"
+    )
+    user_id = serializers.ModelField(
+        model_field=User()._meta.get_field('id'),
+        read_only=True
+    )
 
     def create(self, validated_data):
         comment = Comment.objects.create(**validated_data)
@@ -160,12 +170,23 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class ReplySerializer(serializers.ModelSerializer):
 
-    reply = serializers.CharField(allow_blank=False, trim_whitespace=True)
-    which_comment_id = serializers.ModelField(
-        model_field=Comment()._meta.get_field('id')
+    reply = serializers.CharField(
+        allow_blank=False,
+        trim_whitespace=True,
+        help_text="String value"
     )
-    blog_id = serializers.ModelField(model_field=Post()._meta.get_field('id'))
-    user_id = serializers.ModelField(model_field=User()._meta.get_field('id'))
+    which_comment_id = serializers.ModelField(
+        model_field=Comment()._meta.get_field('id'),
+        help_text="CommentID on which user reply "
+    )
+    blog_id = serializers.ModelField(
+        model_field=Post()._meta.get_field('id'),
+        help_text="blog Id on which reply will apply"
+    )
+    user_id = serializers.ModelField(
+        model_field=User()._meta.get_field('id'),
+        read_only=True
+    )
 
     def create(self, validated_data):
         reply = Reply.objects.create(**validated_data)
@@ -178,6 +199,13 @@ class ReplySerializer(serializers.ModelSerializer):
 
 class NotificationSerializer(serializers.ModelSerializer):
 
+    unread = serializers.BooleanField(
+        default=False,
+        help_text="Boolean value for read status"
+    )
+
     class Meta:
         model = Notification
         fields = '__all__'
+        read_only_fields = ('verb', 'object_id', 'description',
+                            'deleted', 'sender', 'content_type', 'blog')
