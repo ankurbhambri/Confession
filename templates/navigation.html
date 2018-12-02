@@ -24,7 +24,7 @@
                 <a class="nav-link" href="{% url 'logout' %}">Log out</a>
               </li>
               <li class="nav-item">
-                <a class="link">{{ user|title }}
+                <a href="{% url 'user_detail' pk=user.pk %}" class="link">{{ user|title }}
                   {% if user.is_chief %}
                     <i class="fas fa-crown"></i>
                   {% endif %}

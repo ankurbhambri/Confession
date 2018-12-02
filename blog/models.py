@@ -1,6 +1,5 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.utils import timezone
 from ckeditor_uploader.fields import RichTextUploadingField
 
 
@@ -13,6 +12,19 @@ REQUEST_CHOICES = (
 class User(AbstractUser):
     is_editor = models.BooleanField(default=False)
     is_chief = models.BooleanField(default=False)
+
+
+class UserInfo(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        primary_key=True
+    )
+    avatar = models.ImageField(
+        upload_to='profiles',
+    )
+    intro = models.CharField(max_length=1000)
+    bio = RichTextUploadingField()
 
 
 class Post(models.Model):

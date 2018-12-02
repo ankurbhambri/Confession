@@ -21,6 +21,31 @@ from .models import *
 from notifications.signals import send, recieve
 
 
+class UserInfoView(CreateView):
+    model = UserInfo
+    form_class = UserInfoForm
+    template_name = 'blog/userinfo_form.html'
+    success_url = 'home'
+
+    def form_valid(self, form):
+        user_info = form.save(commit=False)
+        user_info.user = self.request.user
+        user_info.save()
+        return redirect('home')
+
+
+class UserDetailView(DetailView):
+    model = UserInfo
+    context_object_name = 'user_info'
+    template_name = 'blog/userdetail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(UserDetailView, self).get_context_data(**kwargs)
+        context['user'] = User.objects.get(id=self.request.user.id)
+        context['notifications'], context['unread_count'] = recieve(self.request.user)
+        return context
+
+
 class HomeView(ListView):
     template_name = 'blog/view_post.html'
     model = Post

@@ -81,3 +81,12 @@ class ReplyForm(forms.ModelForm):
     class Meta:
         model = Reply
         fields = ('reply',)
+
+
+class UserInfoForm(forms.ModelForm):
+    """Image upload form."""
+    # image = forms.ImageField()
+
+    class Meta:
+        model = UserInfo
+        fields = ('avatar', 'intro', 'bio',)

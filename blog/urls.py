@@ -60,4 +60,14 @@ urlpatterns = [
         PostApprovedView.as_view(),
         name="user_approved"
     ),
+    path(
+        'user-info/',
+        UserInfoView.as_view(),
+        name="user_info"
+    ),
+    path(
+        'user-detail/<int:pk>',
+        UserDetailView.as_view(),
+        name="user_detail"
+    ),
 ]

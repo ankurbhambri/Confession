@@ -52,6 +52,6 @@ urlpatterns = [
 if settings.DEBUG and settings.FLAG:
     import debug_toolbar
     urlpatterns += [path('debug', include(debug_toolbar.urls))]
-    # urlpatterns += [url(r'^(.*)$', serve,
-    #                     {'document_root': settings.MEDIA_ROOT})]
+    urlpatterns += [url(r'^media/(?P<path>.* )$', serve,
+                        {'document_root': settings.MEDIA_ROOT})]
     # urlpatterns += static('media/', document_root=settings.MEDIA_ROOT)
