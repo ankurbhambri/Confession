@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import EditorSignUpForm, ChiefSignUpForm
-from .models import User, Post
+from .models import *
 
 
 class CustomUserAdmin(UserAdmin):
@@ -18,3 +18,5 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Post)
+admin.site.register(Comment)
+admin.site.register(Reply)

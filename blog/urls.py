@@ -1,3 +1,4 @@
+from django.views.generic import TemplateView
 from django.urls import path, include
 from django.conf.urls import url
 from .views import *
@@ -60,14 +61,19 @@ urlpatterns = [
         PostApprovedView.as_view(),
         name="user_approved"
     ),
-    path(
-        'user-info/',
-        UserInfoView.as_view(),
-        name="user_info"
-    ),
-    path(
-        'user-detail/<int:pk>',
-        UserDetailView.as_view(),
-        name="user_detail"
-    ),
+    # path(
+    #     'user-info/',
+    #     UserInfoView.as_view(),
+    #     name="user_info"
+    # ),
+    # url(
+    #     r'user-detail/(?P<slug>[\w.@+-]+)/$',
+    #     UserDetailView.as_view(),
+    #     name="user_detail"
+    # ),
+    # path(
+    #     'greeting/',
+    #     TemplateView.as_view(template_name="blog/greeting.html"),
+    #     name='greeting'
+    # ),
 ]

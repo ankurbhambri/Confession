@@ -83,10 +83,29 @@ class ReplyForm(forms.ModelForm):
         fields = ('reply',)
 
 
-class UserInfoForm(forms.ModelForm):
-    """Image upload form."""
-    # image = forms.ImageField()
+# class UserInfoForm(forms.ModelForm):
+#     """Image upload form."""
+#     # image = forms.ImageField()
 
-    class Meta:
-        model = UserInfo
-        fields = ('avatar', 'intro', 'bio',)
+#     class Meta:
+#         model = UserInfo
+#         fields = ('avatar', 'intro', 'bio',)
+
+
+# class ContactForm(forms.Form):
+#     name = forms.CharField(
+#         required=True,
+#         widget=forms.TextInput(attrs={'placeholder': 'Name', 'class': 'form-control'}),
+#     )
+#     from_email = forms.EmailField(
+#         required=True,
+#         widget=forms.EmailInput(attrs={'placeholder': 'Email', 'class': 'form-control'})
+#     )
+#     subject = forms.CharField(
+#         required=True,
+#         widget=forms.TextInput(attrs={'placeholder': 'Subject', 'class': 'form-control'})
+#     )
+#     message = forms.CharField(
+#         required=True,
+#         widget=forms.TextInput(attrs={'placeholder': 'Message', 'class': 'form-control'}),
+#     )

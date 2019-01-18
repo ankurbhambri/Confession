@@ -40,6 +40,7 @@ urlpatterns = [
         name='chief_signup'
     ),
     path('', include('blog.urls')),
+    path('user/', include('accounts.urls')),
     path('notify/', include('notifications.urls')),
     url(r'^ckeditor/upload/',
         uploader_views.upload, name='ckeditor_upload'),

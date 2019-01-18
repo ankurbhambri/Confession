@@ -1,0 +1,152 @@
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
+from django.utils.decorators import method_decorator
+from django.views.generic import (
+    CreateView,
+    DetailView
+)
+from django.views.generic.edit import FormMixin
+from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
+
+from django.core.mail import send_mail
+from django.conf import settings
+
+from .forms import *
+from .models import *
+from blog.models import User
+
+
+@method_decorator([login_required], name='dispatch')
+class UserInfoView(CreateView):
+    model = UserInfo
+    form_class = UserInfoForm
+    template_name = 'accounts/userinfo_form.html'
+    success_url = 'home'
+
+    def form_valid(self, form):
+        user_info = form.save(commit=False)
+        user_info.user = self.request.user
+        user_info.slug = self.request.user.username
+        print(user_info, self.request.user.username)
+        user_info.save()
+        return redirect('home')
+
+
+@method_decorator([login_required], name='dispatch')
+class SkillUpdateView(CreateView):
+    model = SkillSet
+    form_class = SkillsForm
+    template_name = 'accounts/skills_form.html'
+    success_url = reverse_lazy('qualification')
+
+    def get_object(self, **kwargs):
+        return UserInfo.objects.get(slug=self.kwargs['slug'])
+
+    def form_valid(self, form, **kwargs):
+        if 'save_and_return' in self.request.POST:
+            comment = form.save(commit=False)
+            comment.blog = self.get_object()
+            comment.user = self.request.user
+            form.save()
+            return HttpResponseRedirect(reverse_lazy('skill', kwargs={'slug': self.kwargs['slug']}))
+        elif 'submit' in self.request.POST:
+            comment = form.save(commit=False)
+            comment.blog = self.get_object()
+            comment.user = self.request.user
+            form.save()
+            return HttpResponseRedirect(reverse_lazy('qualification', kwargs={'slug': self.kwargs['slug']}))
+
+
+@method_decorator([login_required], name='dispatch')
+class QualificationView(CreateView):
+    model = Qualification
+    form_class = QualificationForm
+    template_name = 'accounts/qualification_form.html'
+    success_url = reverse_lazy('experience')
+
+    def get_object(self, **kwargs):
+        return UserInfo.objects.get(slug=self.kwargs['slug'])
+
+    def form_valid(self, form, **kwargs):
+        if 'save_and_return' in self.request.POST:
+            comment = form.save(commit=False)
+            comment.blog = self.get_object()
+            comment.user = self.request.user
+            form.save()
+            return HttpResponseRedirect(reverse_lazy('qualification', kwargs={'slug': self.kwargs['slug']}))
+        elif 'submit' in self.request.POST:
+            comment = form.save(commit=False)
+            comment.blog = self.get_object()
+            comment.user = self.request.user
+            form.save()
+            return HttpResponseRedirect(reverse_lazy('experience', kwargs={'slug': self.kwargs['slug']}))
+
+
+@method_decorator([login_required], name='dispatch')
+class ExperienceView(CreateView):
+    model = Experience
+    form_class = ExperienceForm
+    template_name = 'accounts/experience_form.html'
+    success_url = 'user_detail'
+
+    def get_object(self, **kwargs):
+        return UserInfo.objects.get(slug=self.kwargs['slug'])
+
+    def form_valid(self, form, **kwargs):
+        if 'save_and_return' in self.request.POST:
+            comment = form.save(commit=False)
+            comment.blog = self.get_object()
+            comment.user = self.request.user
+            form.save()
+            return HttpResponseRedirect(reverse_lazy('experience', kwargs={'slug': self.kwargs['slug']}))
+        elif 'submit' in self.request.POST:
+            comment = form.save(commit=False)
+            comment.blog = self.get_object()
+            comment.user = self.request.user
+            form.save()
+            return HttpResponseRedirect(reverse_lazy(self.success_url))
+
+
+@method_decorator([login_required], name='dispatch')
+class UserDetailView(DetailView, FormMixin):
+    model = UserInfo
+    form_class = ContactForm
+    context_object_name = 'user_info'
+    template_name = 'accounts/userdetail.html'
+
+    def get_success_url(self):
+        # return reverse_lazy('user_detail', kwargs={'slug': 'mashwani'})
+        return reverse_lazy('greeting')
+
+    def get_context_data(self, **kwargs):
+        context = super(UserDetailView, self).get_context_data(**kwargs)
+        username = self.kwargs['slug']
+        context['user'] = User.objects.get(username=username)
+        context['post'] = Post.objects.filter(
+            owner_id=self.object.pk).order_by('-created_date')[:3]
+        return context
+
+    @method_decorator(login_required, name='dispatch')
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        name = form.cleaned_data['name']
+        subject = form.cleaned_data['subject']
+        from_email = form.cleaned_data['from_email'].strip()
+        message = form.cleaned_data['message']
+        msg = "Hi, I am %s and email: %s. \n\n\t%s" % (name, from_email, message)
+        try:
+            # send_mail(subject, msg, from_email, settings.EMAIL_HOST_USER)
+            send_mail(subject, msg, settings.EMAIL_HOST_USER, ['confessionat9@gmail.com'])
+            print("MAIL SEND SUCCESSFULLY")
+        except Exception:
+            print("MAIL NOT SEND")
+        return super(UserDetailView, self).form_valid(form)

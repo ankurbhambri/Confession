@@ -1,3 +1,4 @@
+import datetime
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
@@ -7,6 +8,15 @@ REQUEST_CHOICES = (
     ('api', 'api'),
     ('template', 'template')
 )
+DEGREE = (
+    ('metric', 'Metriculate'),
+    ('inter', 'Intermediate'),
+    ('grad', 'Graduation'),
+    ('pg', 'Post-Graduation'),
+    ('dr', 'doctorate'),
+)
+YEAR_CHOICES = [(r, r) for r in range(1950, datetime.date.today().year + 5)]
+RATING_CHOICES = [(r, r) for r in range(0, 101)]
 
 
 class User(AbstractUser):
@@ -14,17 +24,51 @@ class User(AbstractUser):
     is_chief = models.BooleanField(default=False)
 
 
-class UserInfo(models.Model):
-    user = models.OneToOneField(
-        User,
-        on_delete=models.CASCADE,
-        primary_key=True
-    )
-    avatar = models.ImageField(
-        upload_to='profiles',
-    )
-    intro = models.CharField(max_length=1000)
-    bio = RichTextUploadingField()
+# class UserInfo(models.Model):
+#     user = models.OneToOneField(
+#         User,
+#         on_delete=models.CASCADE,
+#         primary_key=True
+#     )
+#     avatar = models.ImageField(upload_to='profiles')
+#     intro = models.CharField(max_length=1000)
+#     bio = RichTextUploadingField()
+#     slug = models.SlugField()
+
+
+# class SkillSet(models.Model):
+#     user = models.ForeignKey(
+#         User,
+#         on_delete=models.CASCADE,
+#     )
+#     skill = models.CharField(
+#         max_length=255,
+#         blank=False,
+#         null=False
+#     )
+#     rating = models.IntegerField(
+#         choices=RATING_CHOICES,
+#         blank=False,
+#         null=False,
+#         default=0
+#     )
+
+
+# class Qualification(models.Model):
+#     user = models.ForeignKey(
+#         User,
+#         on_delete=models.CASCADE,
+#     )
+#     qualification = models.CharField(
+#         max_length=255,
+#         choices=DEGREE,
+#         null=False
+#     )
+#     specialization = models.CharField(max_length=255, null=False)
+#     grade = models.CharField(max_length=10, null=False)
+#     from_year = models.IntegerField(('year'), choices=YEAR_CHOICES)
+#     completion_year = models.IntegerField(('year'), choices=YEAR_CHOICES)
+#     achievement = RichTextUploadingField()
 
 
 class Post(models.Model):

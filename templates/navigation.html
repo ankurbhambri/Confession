@@ -24,11 +24,11 @@
                 <a class="nav-link" href="{% url 'logout' %}">Log out</a>
               </li>
               <li class="nav-item">
-                <a href="{% url 'user_detail' pk=user.pk %}" class="link">{{ user|title }}
-                  {% if user.is_chief %}
-                    <i class="fas fa-crown"></i>
-                  {% endif %}
-                </a>
+                  <a class="nav-link" id="username" {% if user.username == "mashwani" %} href="{% url 'user_detail' slug=user.username %}"{% endif %} class="link">{{ user|title }}
+                    {% if user.is_chief %}
+                      <i class="fas fa-crown"></i>
+                    {% endif %}
+                  </a>
               </li>
             </ul>
             {% block notification %}

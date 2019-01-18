@@ -226,3 +226,22 @@ button:hover {
 .text-right {
     padding-left: 420px;
 }
+
+#form {
+  padding-left: 125px;
+}
+
+input#id_skill, input#id_rating {
+  width: 50%;
+}
+
+#skill-save-return {
+    width: 250px;
+    margin-left: 106px;
+}
+
+#skill-save {
+    width: 250px;
+    margin-left: 400px;
+    margin-top: -76px;    
+}

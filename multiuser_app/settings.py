@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'blog',
+    'accounts',
     'notifications',
 ]
 
@@ -261,6 +262,13 @@ JWT_AUTH = {
     "JWT_AUTH_HEADER_PREFIX": "Bearer",
     "JWT_EXPIRATION_DELTA": datetime.timedelta(seconds=7200)
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'asashwanishakya@gmail.com'
+EMAIL_HOST_PASSWORD = 'Sonu9891239915!@#'
 
 try:
     if DEBUG and FLAG:
