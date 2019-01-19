@@ -1,7 +1,5 @@
 {% load static %}
 
-{# <img src="{% static '{{ user_info.avatar.url }}"> #}
-
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -27,6 +25,7 @@
 
 	<link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700" rel="stylesheet">
+	<link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
 	
 	<!-- Animate.css -->
 	<link rel="stylesheet" href="{% static 'css/profile/animate.css' %}">
@@ -43,6 +42,7 @@
 	<link rel="stylesheet" href="{% static 'css/profile/owl.theme.default.min.css' %}">
 	<!-- Theme style  -->
 	<link rel="stylesheet" href="{% static 'css/profile/style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/profile/color.css' %}">
 
 	<!-- Modernizr JS -->
 	<script src="{% static 'js/profile/modernizr-2.6.2.min.js' %}"></script>
@@ -116,14 +116,14 @@
 							<div class="row">
 								<div class="col-md-3" data-animate-effect="fadeInLeft">
 									<div class="services color-1">
-										<span class="icon2"><i class="icon-bulb"></i></span>
-										<h3>Graphic Design</h3>
+										<span class="icon2"><i class="icon-file-excel"></i></span>
+										<h3>Data Analyst</h3>
 									</div>
 								</div>
 								<div class="col-md-3" data-animate-effect="fadeInRight">
 									<div class="services color-2">
 										<span class="icon2"><i class="icon-globe-outline"></i></span>
-										<h3>Web Design</h3>
+										<h3>Machine Learning</h3>
 									</div>
 								</div>
 								<div class="col-md-3" data-animate-effect="fadeInTop">
@@ -142,8 +142,8 @@
 							<div class="row">
 								<div class="col-md-12" data-animate-effect="fadeInLeft">
 									<div class="hire">
-										<h2>I am happy to know you <br>that 300+ projects done sucessfully!</h2>
-										<a href="#" class="btn-hire">Hire me</a>
+										<h2>I am happy to know you <br>that 10+ projects done sucessfully!</h2>
+										<a href="#contact-email" class="btn-hire">Hire me</a>
 									</div>
 								</div>
 							</div>
@@ -244,15 +244,15 @@
 							<span class="colorlib-counter-label">Cups of coffee</span>
 						</div>
 						<div class="col-md-3 text-center">
-							<span class="colorlib-counter js-counter" data-from="0" data-to="356" data-speed="5000" data-refresh-interval="50"></span>
+							<span class="colorlib-counter js-counter" data-from="0" data-to="5" data-speed="5000" data-refresh-interval="50"></span>
 							<span class="colorlib-counter-label">Projects</span>
 						</div>
 						<div class="col-md-3 text-center">
-							<span class="colorlib-counter js-counter" data-from="0" data-to="30" data-speed="5000" data-refresh-interval="50"></span>
+							<span class="colorlib-counter js-counter" data-from="0" data-to="3" data-speed="5000" data-refresh-interval="50"></span>
 							<span class="colorlib-counter-label">Clients</span>
 						</div>
 						<div class="col-md-3 text-center">
-							<span class="colorlib-counter js-counter" data-from="0" data-to="10" data-speed="5000" data-refresh-interval="50"></span>
+							<span class="colorlib-counter js-counter" data-from="0" data-to="2" data-speed="5000" data-refresh-interval="50"></span>
 							<span class="colorlib-counter-label">Partners</span>
 						</div>
 					</div>
@@ -268,105 +268,19 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6" data-animate-effect="fadeInLeft">
-							<div class="progress-wrap">
-								<h3>Python</h3>
-								<div class="progress">
-								 	<div class="progress-bar color-1" role="progressbar" aria-valuenow="75"
-								  	aria-valuemin="0" aria-valuemax="100" style="width:75%">
-								    <span>75%</span>
-								  	</div>
+						{% for i in skill%}
+							<div class="col-md-6" data-animate-effect="fadeInLeft">
+								<div class="progress-wrap">
+									<h3>{{i.skill}}</h3>
+									<div class="progress">
+									 	<div class="progress-bar color-{{forloop.counter}}" role="progressbar" aria-valuenow="{{i.rating}}"
+									  	aria-valuemin="0" aria-valuemax="100" style="width:{{i.rating}}%">
+									    <span>{{i.rating}}%</span>
+									  	</div>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="col-md-6" data-animate-effect="fadeInRight">
-							<div class="progress-wrap">
-								<h3>Django</h3>
-								<div class="progress">
-								 	<div class="progress-bar color-2" role="progressbar" aria-valuenow="70"
-								  	aria-valuemin="0" aria-valuemax="100" style="width:70%">
-								    <span>70%</span>
-								  	</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6" data-animate-effect="fadeInRight">
-							<div class="progress-wrap">
-								<h3>Django Rest Framework</h3>
-								<div class="progress">
-								 	<div class="progress-bar color-3" role="progressbar" aria-valuenow="90"
-								  	aria-valuemin="0" aria-valuemax="100" style="width:90%">
-								    <span>90%</span>
-								  	</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6" data-animate-effect="fadeInLeft">
-							<div class="progress-wrap">
-								<h3>Scrapy</h3>
-								<div class="progress">
-								 	<div class="progress-bar color-4" role="progressbar" aria-valuenow="75"
-								  	aria-valuemin="0" aria-valuemax="100" style="width:75%">
-								    <span>75%</span>
-								  	</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6" data-animate-effect="fadeInRight">
-							<div class="progress-wrap">
-								<h3>Elasticsearch</h3>
-								<div class="progress">
-								 	<div class="progress-bar color-5" role="progressbar" aria-valuenow="80"
-								  	aria-valuemin="0" aria-valuemax="100" style="width:80%">
-								    <span>80%</span>
-								  	</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6" data-animate-effect="fadeInLeft">
-							<div class="progress-wrap">
-								<h3>Falcon</h3>
-								<div class="progress">
-								 	<div class="progress-bar color-6" role="progressbar" aria-valuenow="70"
-								  	aria-valuemin="0" aria-valuemax="100" style="width:70%">
-								    <span>70%</span>
-								  	</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6" data-animate-effect="fadeInRight">
-							<div class="progress-wrap">
-								<h3>MongoDB</h3>
-								<div class="progress">
-								 	<div class="progress-bar color-7" role="progressbar" aria-valuenow="50"
-								  	aria-valuemin="0" aria-valuemax="100" style="width:50%">
-								    <span>50%</span>
-								  	</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6" data-animate-effect="fadeInRight">
-							<div class="progress-wrap">
-								<h3>Git</h3>
-								<div class="progress">
-								 	<div class="progress-bar color-8" role="progressbar" aria-valuenow="75"
-								  	aria-valuemin="0" aria-valuemax="100" style="width:75%">
-								    <span>75%</span>
-								  	</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6" data-animate-effect="fadeInRight">
-							<div class="progress-wrap">
-								<h3>Ansible</h3>
-								<div class="progress">
-								 	<div class="progress-bar color-9" role="progressbar" aria-valuenow="80"
-								  	aria-valuemin="0" aria-valuemax="100" style="width:80%">
-								    <span>80%</span>
-								  	</div>
-								</div>
-							</div>
-						</div>
+						{% endfor %}
 					</div>
 				</div>
 			</section>
@@ -383,84 +297,21 @@
 						<div class="col-md-12" data-animate-effect="fadeInLeft">
 							<div class="fancy-collapse-panel">
 								<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+								{% for count, value in qualification.items %}
 									<div class="panel panel-default">
-									    <div class="panel-heading" role="tab" id="headingOne">
+									    <div class="panel-heading" role="tab" id="heading{{count}}">
 									        <h4 class="panel-title">
-									            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Master Degree Graphic Design
+									            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{count}}" aria-expanded="false" aria-controls="collapse{{count}}">{{value.specialization}} | {{ value.grade }} | {{ value.from_year }} - {{ value.completion_year }} 
 									            </a>
 									        </h4>
 									    </div>
-									    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-									         <div class="panel-body">
-									            <div class="row">
-										      		<div class="col-md-6">
-										      			<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. </p>
-										      		</div>
-										      		<div class="col-md-6">
-										      			<p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-										      		</div>
-										      	</div>
-									         </div>
-									    </div>
-									</div>
-									<div class="panel panel-default">
-									    <div class="panel-heading" role="tab" id="headingTwo">
-									        <h4 class="panel-title">
-									            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Bachelor Degree of Computer Science
-									            </a>
-									        </h4>
-									    </div>
-									    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+									    <div id="collapse{{count}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{count}}">
 									        <div class="panel-body">
-									            <p>Far far away, behind the word <strong>mountains</strong>, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-													<ul>
-														<li>Separated they live in Bookmarksgrove right</li>
-														<li>Separated they live in Bookmarksgrove right</li>
-													</ul>
+									            {{ value.achievement }}
 									        </div>
 									    </div>
 									</div>
-									<div class="panel panel-default">
-									    <div class="panel-heading" role="tab" id="headingThree">
-									        <h4 class="panel-title">
-									            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Diploma in Information Technology
-									            </a>
-									        </h4>
-									    </div>
-									    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-									        <div class="panel-body">
-									            <p>Far far away, behind the word <strong>mountains</strong>, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>	
-									        </div>
-									    </div>
-									</div>
-
-									<div class="panel panel-default">
-									    <div class="panel-heading" role="tab" id="headingFour">
-									        <h4 class="panel-title">
-									            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">Diploma in Information Technology
-									            </a>
-									        </h4>
-									    </div>
-									    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-									        <div class="panel-body">
-									            <p>Far far away, behind the word <strong>mountains</strong>, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>	
-									        </div>
-									    </div>
-									</div>
-
-									<div class="panel panel-default">
-									    <div class="panel-heading" role="tab" id="headingFive">
-									        <h4 class="panel-title">
-									            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">High School Secondary Education
-									            </a>
-									        </h4>
-									    </div>
-									    <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
-									        <div class="panel-body">
-									            <p>Far far away, behind the word <strong>mountains</strong>, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>	
-									        </div>
-									    </div>
-									</div>
+								{% endfor %}
 								</div>
 							</div>
 						</div>
@@ -479,69 +330,21 @@
 					<div class="row">
 						<div class="col-md-12">
 				         <div class="timeline-centered">
-					         <article class="timeline-entry" data-animate-effect="fadeInLeft">
-					            <div class="timeline-entry-inner">
+				         	{% for exp in experience %}
+						         <article class="timeline-entry" data-animate-effect="fadeInLeft">
+						            <div class="timeline-entry-inner">
 
-					               <div class="timeline-icon color-1">
-					                  <i class="icon-pen2"></i>
-					               </div>
+						               <div class="timeline-icon color-{{forloop.counter}}">
+						                  <i class="icon-pen2"></i>
+						               </div>
 
-					               <div class="timeline-label">
-					                  <h2><a href="#">Full Stack Developer</a> <span>2017-2018</span></h2>
-					                  <p>Tolerably earnestly middleton extremely distrusts she boy now not. Add and offered prepare how cordial two promise. Greatly who affixed suppose but enquire compact prepare all put. Added forth chief trees but rooms think may.</p>
-					               </div>
-					            </div>
-					         </article>
-
-
-					         <article class="timeline-entry" data-animate-effect="fadeInRight">
-					            <div class="timeline-entry-inner">
-					               <div class="timeline-icon color-2">
-					                  <i class="icon-pen2"></i>
-					               </div>
-					               <div class="timeline-label">
-					               	<h2><a href="#">Front End Developer at Google Company</a> <span>2017-2018</span></h2>
-					                  <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.</p>
-					               </div>
-					            </div>
-					         </article>
-
-					         <article class="timeline-entry" data-animate-effect="fadeInLeft">
-					            <div class="timeline-entry-inner">
-					               <div class="timeline-icon color-3">
-					                  <i class="icon-pen2"></i>
-					               </div>
-					               <div class="timeline-label">
-					               	<h2><a href="#">System Analyst</a> <span>2017-2018</span></h2>
-					                  <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.</p>
-					               </div>
-					            </div>
-					         </article>
-
-					         <article class="timeline-entry" data-animate-effect="fadeInTop">
-					            <div class="timeline-entry-inner">
-					               <div class="timeline-icon color-4">
-					                  <i class="icon-pen2"></i>
-					               </div>
-					               <div class="timeline-label">
-					               	<h2><a href="#">Creative Designer</a> <span>2017-2018</span></h2>
-					                  <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.</p>
-					               </div>
-					            </div>
-					         </article>
-
-					         <article class="timeline-entry" data-animate-effect="fadeInLeft">
-					            <div class="timeline-entry-inner">
-					               <div class="timeline-icon color-5">
-					                  <i class="icon-pen2"></i>
-					               </div>
-					               <div class="timeline-label">
-					               	<h2><a href="#">UI/UX Designer at Envato</a> <span>2017-2018</span></h2>
-					                  <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.</p>
-					               </div>
-					            </div>
-					         </article>
-
+						               <div class="timeline-label">
+						                  <h2><a href="#">{{ exp.designation }}</a> <span>{{ exp.start_month }} {{ exp.start_year }} - {% if exp.end_month %} {{ exp.end_month }} {{ exp.completion_year }} {% elif exp.present_working %} present {% endif %}</span></h2>
+						                  <p>{{ exp.description }}</p>
+						               </div>
+						            </div>
+						         </article>
+						    {% endfor %}
 					         <article class="timeline-entry begin" data-animate-effect="fadeInBottom">
 					            <div class="timeline-entry-inner">
 					               <div class="timeline-icon color-none">
@@ -554,7 +357,7 @@
 				</div>
 			</section>
 
-			<section class="colorlib-work" data-section="work">
+			<!-- <section class="colorlib-work" data-section="work">
 				<div class="colorlib-narrow-content">
 					<div class="row">
 						<div class="col-md-6 col-md-offset-3 col-md-pull-3" data-animate-effect="fadeInLeft">
@@ -666,7 +469,7 @@
 					</div>
 				</div>
 			</section>
-
+ -->
 			<section class="colorlib-blog" data-section="blog">
 				<div class="colorlib-narrow-content">
 					<div class="row">
@@ -688,11 +491,11 @@
 						</div>
 						{% endfor %}
 					</div>
-					<div class="row">
+					<!-- <div class="row">
 						<div class="col-md-12">
 							<p><a href="{% url 'post_list' %}" class="btn btn-primary btn-lg btn-load-more">Load more <i class="icon-reload"></i></a></p>
 						</div>
-					</div>
+					</div> -->
 				</div>
 			</section>
 
@@ -706,7 +509,7 @@
 					</div>
 					<div class="row">
 						<div class="col-md-5">
-							<div class="colorlib-feature colorlib-feature-sm" data-animate-effect="fadeInLeft">
+							<div class="colorlib-feature colorlib-feature-sm" id="contact-email" data-animate-effect="fadeInLeft">
 								<div class="colorlib-icon">
 									<i class="icon-mail"></i>
 								</div>

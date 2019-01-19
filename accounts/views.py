@@ -9,9 +9,10 @@ from django.views.generic import (
 from django.views.generic.edit import FormMixin
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
-
 from django.core.mail import send_mail
 from django.conf import settings
+
+from num2words import num2words
 
 from .forms import *
 from .models import *
@@ -105,8 +106,19 @@ class ExperienceView(CreateView):
             comment = form.save(commit=False)
             comment.blog = self.get_object()
             comment.user = self.request.user
-            form.save()
-            return HttpResponseRedirect(reverse_lazy(self.success_url))
+            if form.cleaned_data['present_working']:
+                if not form.cleaned_data['end_month']:
+                    comment.end_month = None
+                if not form.cleaned_data['completion_year']:
+                    comment.completion_year = None
+            comment.save()
+            return HttpResponseRedirect(reverse_lazy(self.success_url, kwargs={'slug': self.kwargs['slug']}))
+
+    # def save_form(self, form):
+    #     comment = form.save(commit=False)
+    #     comment.blog = self.get_object()
+    #     comment.user = self.request.user
+    #     form.save()
 
 
 @method_decorator([login_required], name='dispatch')
@@ -124,6 +136,13 @@ class UserDetailView(DetailView, FormMixin):
         context = super(UserDetailView, self).get_context_data(**kwargs)
         username = self.kwargs['slug']
         context['user'] = User.objects.get(username=username)
+        context['skill'] = SkillSet.objects.filter(user=self.object.pk)
+        qualification = Qualification.objects.filter(user=self.object.pk)
+        d = {}
+        for i in range(len(qualification)):
+            d[num2words(i+1).capitalize()] = qualification[i]
+        context['qualification'] = d
+        context['experience'] = Experience.objects.filter(user=self.object.pk)
         context['post'] = Post.objects.filter(
             owner_id=self.object.pk).order_by('-created_date')[:3]
         return context
