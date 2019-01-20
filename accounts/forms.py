@@ -20,7 +20,8 @@ class SkillsForm(forms.ModelForm):
         model = SkillSet
         fields = ('skill', 'rating',)
         widgets = {
-            'rating': forms.NumberInput(attrs={'type': 'range', 'step': '1'})
+            'skill': forms.TextInput(attrs={"placeholder": "eg. Java, Python etc"}),
+            'rating': forms.TextInput(attrs={'type': 'range', 'step': '1'})
         }
 
 

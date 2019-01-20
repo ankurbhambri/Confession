@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -43,6 +42,7 @@
 	<!-- Theme style  -->
 	<link rel="stylesheet" href="{% static 'css/profile/style.css' %}">
 	<link rel="stylesheet" href="{% static 'css/profile/color.css' %}">
+	<link rel="stylesheet" href="{% static 'css/profile/custom.css' %}">
 
 	<!-- Modernizr JS -->
 	<script src="{% static 'js/profile/modernizr-2.6.2.min.js' %}"></script>
@@ -58,16 +58,19 @@
 		<a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><i></i></a>
 		<aside id="colorlib-aside" role="complementary" class="border js-fullheight">
 			<div class="text-center">
+				{% if user_auth %}
+					<a class="user-title" href="{% url 'user_info' %}"><i class="icon-pen"></i></a>
+				{% endif %}
 				<div class="author-img" style="background-image: url({{ user_info.avatar.url }});">
 					
 				</div>
-				<h1 id="colorlib-logo"><a href="index.html">{{ user.first_name }} {{ user.last_name }}</a></h1>
-				<span class="position"><a href="#">{{ user_info.intro }}</span>
+				<h1 id="colorlib-logo"><a>{{ user.first_name }} {{ user.last_name }}</a></h1>
+				<span class="position"><a>{{ user_info.intro }}</span>
 			</div>
 			<nav id="colorlib-main-menu" role="navigation" class="navbar">
 				<div id="navbar" class="collapse">
 					<ul>
-						<li class="active"><a href="#" data-nav-section="home">Home</a></li>
+						<!-- <li class="active"><a href="#colorlib-aside" data-nav-section="home">Home</a></li> -->
 						<li><a href="#" data-nav-section="about">About</a></li>
 						<li><a href="#" data-nav-section="services">Services</a></li>
 						<li><a href="#" data-nav-section="skills">Skills</a></li>
@@ -107,6 +110,9 @@
 									<div class="about-desc">
 										<span class="heading-meta">About Us</span>
 										<h2 class="colorlib-heading">Who Am I?</h2>
+										{% if user_auth %}
+											<a class="user-desc" href="{% url 'user_info' %}"><i class="icon-pen"></i></a>
+										{% endif %}
 										<p>
 											{{ user_info.bio|safe }}
 										</p>
@@ -268,15 +274,23 @@
 						</div>
 					</div>
 					<div class="row">
-						{% for i in skill%}
+						{% for i in skill %}
 							<div class="col-md-6" data-animate-effect="fadeInLeft">
 								<div class="progress-wrap">
-									<h3>{{i.skill}}</h3>
+									<h3>
+										<form action="{% url 'skill_delete' i.pk %}" method="post">{% csrf_token %}
+							                <a onclick="this.parentNode.submit();" id="confirm-delete">{{i.skill}} <i class="icon-delete2"></i></a>
+							                <a href="{% url 'skill-update' pk=i.pk %}"><i class="icon-edit"></i></a>
+						              	</form>
+									</h3>
 									<div class="progress">
-									 	<div class="progress-bar color-{{forloop.counter}}" role="progressbar" aria-valuenow="{{i.rating}}"
+										{% if user_auth %}
+											<div class="progress-bar color-{{forloop.counter}}" role="progressbar" aria-valuenow="{{i.rating}}"
 									  	aria-valuemin="0" aria-valuemax="100" style="width:{{i.rating}}%">
-									    <span>{{i.rating}}%</span>
+									    	<span>{{i.rating}}%</span>							              	
 									  	</div>
+										{% endif %}
+									 	
 									</div>
 								</div>
 							</div>
@@ -573,6 +587,12 @@
 	
 	<!-- MAIN JS -->
 	<script src="{% static 'js/profile/main.js' %}"></script>
+
+	<script type="text/javascript">
+        $(document).on('click', '#confirm-delete', function(){
+            return confirm('Are you sure you want to delete this?');
+        })
+    </script>
 
 	</body>
 </html>

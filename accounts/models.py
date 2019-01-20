@@ -29,9 +29,9 @@ class UserInfo(models.Model):
         on_delete=models.CASCADE,
         primary_key=True
     )
-    avatar = models.ImageField(upload_to='profiles', blank=True)
-    intro = models.CharField(max_length=1000, blank=True)
-    bio = RichTextUploadingField(blank=True)
+    avatar = models.ImageField(upload_to='profiles', blank=True, default='/profiles/python.png')
+    intro = models.CharField(max_length=1000, blank=True, null=True)
+    bio = RichTextUploadingField(blank=True, null=True)
     slug = models.SlugField()
 
 

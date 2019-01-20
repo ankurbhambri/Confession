@@ -1,9 +1,17 @@
 /* -----------------------------------------
    Timeline
 ----------------------------------------- */
+
+.dropdown {
+  background: @colorWhite;
+  color: @colorWhite;
+  font-family: 'Lato';
+  font-size: 14px;
+  padding: 10px;
+}
 .timeline {
   list-style: none;
-  padding-left: 0;
+  padding-left: 10px;
   position: relative;
 }
 .timeline:after {
@@ -170,14 +178,24 @@
 ----------------------------------------- */
 .dropdown-menu{
     padding:0 0 0 0;
+    width: 350px;
 }
 a.dropdown-menu-header {
-    background: #f7f9fe;
+    background: #0085a1;
     font-weight: bold;
     border-bottom: 1px solid #e3e3e3;
 }
 .dropdown-menu > li a {
     padding: 10px 20px;
+    color: #fff;
+}
+
+.timeline-icon > i {
+  color:#009688;
+}
+
+.timeline-icon > a {
+  padding-left: 18px;
 }
 
 /* -----------------------------------------

@@ -11,10 +11,15 @@ urlpatterns = [
         UserInfoView.as_view(),
         name="user_info"
     ),
-    url(
-        r'user-detail/(?P<slug>[\w.@+-]+)/$',
+    path(
+        'user-detail/<int:pk>',
         UserDetailView.as_view(),
         name="user_detail"
+    ),
+    url(
+        r'user-update/(?P<slug>[\w.@+-]+)/$',
+        UserUpdateView.as_view(),
+        name='user-update'
     ),
     path(
         'greeting/',
@@ -23,8 +28,13 @@ urlpatterns = [
     ),
     url(
         r'skill/(?P<slug>[\w.@+-]+)/$',
-        SkillUpdateView.as_view(),
+        SkillView.as_view(),
         name='skill'
+    ),
+    path(
+        'skill-update/<int:pk>',
+        SkillUpdateView.as_view(),
+        name='skill-update'
     ),
     url(
         r'qualification/(?P<slug>[\w.@+-]+)/$',
@@ -35,5 +45,10 @@ urlpatterns = [
         r'experience/(?P<slug>[\w.@+-]+)/$',
         ExperienceView.as_view(),
         name='experience'
+    ),
+    path(
+        'skill/delete/<int:pk>',
+        DeleteSkillView.as_view(),
+        name="skill_delete"
     ),
 ]

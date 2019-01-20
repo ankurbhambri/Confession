@@ -27,13 +27,14 @@ $(document).ready(function(){
         <li role="presentation">
             <a href="#" class="dropdown-menu-header">Notifications</a>
         </li>
-        <ul class="timeline timeline-icons timeline-sm" style="margin:10px;width:210px">
+        <ul class="timeline timeline-icons timeline-sm">
             {% for notify in notifications %}
                     <li>
                         <p>
-                            <span class="timeline-icon"><i class="far fa-file-alt" style="color:#009688"></i></span>
-                            <span>
+                            <span class="timeline-icon"><i class="far fa-file-alt"></i>
                                 <a href="{% url 'post_detail' pk=notify.blog.id %}">{{ notify.verb }}</a>
+                                <br>
+                                <br>
                             </span>
                         </p>
                     </li>
@@ -44,6 +45,5 @@ $(document).ready(function(){
         </li>
     </ul>
 </div>
-
 
 {% endblock %}

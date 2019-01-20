@@ -4,7 +4,9 @@ from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.views.generic import (
     CreateView,
-    DetailView
+    UpdateView,
+    DetailView,
+    DeleteView
 )
 from django.views.generic.edit import FormMixin
 from django.urls import reverse_lazy
@@ -30,13 +32,22 @@ class UserInfoView(CreateView):
         user_info = form.save(commit=False)
         user_info.user = self.request.user
         user_info.slug = self.request.user.username
-        print(user_info, self.request.user.username)
         user_info.save()
         return redirect('home')
 
 
 @method_decorator([login_required], name='dispatch')
-class SkillUpdateView(CreateView):
+class UserUpdateView(UpdateView):
+    model = UserInfo
+    form_class = UserInfoForm
+    template_name = 'accounts/userinfo_form.html'
+
+    def get_success_url(self):
+        return reverse_lazy('user_detail', kwargs={'slug': self.kwargs['slug']})
+
+
+@method_decorator([login_required], name='dispatch')
+class SkillView(CreateView):
     model = SkillSet
     form_class = SkillsForm
     template_name = 'accounts/skills_form.html'
@@ -121,7 +132,7 @@ class ExperienceView(CreateView):
     #     form.save()
 
 
-@method_decorator([login_required], name='dispatch')
+# @method_decorator([login_required], name='dispatch')
 class UserDetailView(DetailView, FormMixin):
     model = UserInfo
     form_class = ContactForm
@@ -133,9 +144,10 @@ class UserDetailView(DetailView, FormMixin):
         return reverse_lazy('greeting')
 
     def get_context_data(self, **kwargs):
+        print(self.request.user.is_authenticated)
         context = super(UserDetailView, self).get_context_data(**kwargs)
-        username = self.kwargs['slug']
-        context['user'] = User.objects.get(username=username)
+        context['user_auth'] = self.request.user.is_authenticated
+        context['user'] = User.objects.get(pk=self.object.pk)
         context['skill'] = SkillSet.objects.filter(user=self.object.pk)
         qualification = Qualification.objects.filter(user=self.object.pk)
         d = {}
@@ -147,7 +159,7 @@ class UserDetailView(DetailView, FormMixin):
             owner_id=self.object.pk).order_by('-created_date')[:3]
         return context
 
-    @method_decorator(login_required, name='dispatch')
+    # @method_decorator(login_required, name='dispatch')
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = self.get_form()
@@ -169,3 +181,36 @@ class UserDetailView(DetailView, FormMixin):
         except Exception:
             print("MAIL NOT SEND")
         return super(UserDetailView, self).form_valid(form)
+
+
+@method_decorator([login_required], name='dispatch')
+class DeleteSkillView(DeleteView):
+    model = SkillSet
+    # success_url = reverse_lazy('user_detail')
+
+    def get_success_url(self):
+        return reverse_lazy('user_detail', kwargs={'pk': self.request.user.pk})
+
+
+@method_decorator([login_required], name='dispatch')
+class SkillUpdateView(UpdateView):
+    model = SkillSet
+    template_name = 'accounts/skills_form.html'
+    # fields = ['skill', 'rating']
+    form_class = SkillsForm
+
+    def get_success_url(self):
+        return reverse_lazy('user_detail', kwargs={'pk': self.request.user.pk})
+
+
+# @method_decorator([login_required], name='dispatch')
+# class SkillBatchUpdateView(UpdateView):
+#     model = SkillSet
+#     template_name = 'accounts/skills_form.html'
+#     # fields = ['skill', 'rating']
+#     form_class = SkillsForm
+
+#     def get_success_url(self):
+#         return reverse_lazy('user_detail', kwargs={'pk': self.request.user.pk})
+
+
