@@ -27,19 +27,25 @@ $(document).ready(function(){
         <li role="presentation">
             <a href="#" class="dropdown-menu-header">Notifications</a>
         </li>
-        <ul class="timeline timeline-icons timeline-sm">
-            {% for notify in notifications %}
-                    <li>
-                        <p>
-                            <span class="timeline-icon"><i class="far fa-file-alt"></i>
-                                <a href="{% url 'post_detail' pk=notify.blog.id %}">{{ notify.verb }}</a>
-                                <br>
-                                <br>
-                            </span>
-                        </p>
-                    </li>
-            {% endfor %}
-        </ul>
+        {% if notifications %}
+            <ul class="timeline timeline-icons timeline-sm">
+                {% for notify in notifications %}
+                        <li>
+                            <p>
+                                <span class="timeline-icon"><i class="far fa-file-alt"></i>
+                                    <a href="{% url 'post_detail' pk=notify.blog.id %}">{{ notify.verb }}</a>
+                                    <br>
+                                    <br>
+                                </span>
+                            </p>
+                        </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <li>
+                <a>No Notifications</a>
+            </li>
+        {% endif %}
         <li role="presentation">
             <a href="#" class="dropdown-menu-header"></a>
         </li>

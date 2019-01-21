@@ -26,3 +26,15 @@
 	margin-left: 625px;
     margin-top: -54px;
 }
+
+.confession {
+	float: right;
+    padding: 20px 36px;
+    color: black;
+    font-weight: 800;
+    font-size: 18px;
+    line-height: 20px;
+    height: 50px;
+    font-family: Arial,sans-serif;
+    font-weight: bold;
+}

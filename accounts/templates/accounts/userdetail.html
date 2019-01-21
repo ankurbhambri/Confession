@@ -106,8 +106,8 @@
 			</div>
 
 		</aside>
-
 		<div id="colorlib-main">
+			<h2><a class="confession" href="{% url 'home' %}">CONFESSION</a></h2>
 			<section class="colorlib-about" data-section="about">
 				<div class="colorlib-narrow-content">
 					<div class="row">
@@ -277,6 +277,9 @@
 					<div class="row">
 						<div class="col-md-6 col-md-offset-3 col-md-pull-3" data-animate-effect="fadeInLeft">
 							<span class="heading-meta">My Specialty</span>
+							{% if user_auth %}
+								<a href="{% url 'skill' slug=user.username %}">Add Skills</i></a>
+							{% endif %}
 							<h2 class="colorlib-heading">My Skills</h2>
 						</div>
 					</div>
@@ -313,6 +316,9 @@
 					<div class="row">
 						<div class="col-md-6 col-md-offset-3 col-md-pull-3" data-animate-effect="fadeInLeft">
 							<span class="heading-meta">Education</span>
+							{% if user_auth %}
+								<a href="{% url 'qualification' slug=user.username %}">Add Qualifications</i></a>
+							{% endif %}
 							<h2 class="colorlib-heading">Education</h2>
 						</div>
 					</div>
@@ -360,6 +366,9 @@
 					<div class="row">
 						<div class="col-md-6 col-md-offset-3 col-md-pull-3" data-animate-effect="fadeInLeft">
 							<span class="heading-meta">Experience</span>
+							{% if user_auth %}
+								<a href="{% url 'experience' slug=user.username %}">Add Experience</i></a>
+							{% endif %}
 							<h2 class="colorlib-heading">Work Experience</h2>
 						</div>
 					</div>
@@ -517,34 +526,37 @@
 				</div>
 			</section>
  -->
-			<section class="colorlib-blog" data-section="blog">
-				<div class="colorlib-narrow-content">
-					<div class="row">
-						<div class="col-md-6 col-md-offset-3 col-md-pull-3" data-animate-effect="fadeInLeft">
-							<span class="heading-meta">Read</span>
-							<h2 class="colorlib-heading">Recent Blog</h2>
-						</div>
-					</div>
-					<div class="row">
-						{% for blog in post %}
-						<div class="col-md-4 col-sm-6" data-animate-effect="fadeInLeft">
-							<div class="blog-entry">
-								<div class="desc">
-									<span><small>{{ blog.published_date|date:'d-m-Y'}}{% if post.is_approve %} &#x2713; {% else %} &#10007; {% endif %}</small></span>
-									<h3><a href="{% url 'post_detail' pk=blog.pk %}">{{ blog.title }}</a></h3>
-									<p>{{ blog.text|safe|truncatechars:110 }}</p>
-								</div>
+ 			<hr>
+ 			{% if post %}
+				<section class="colorlib-blog" data-section="blog">
+					<div class="colorlib-narrow-content">
+						<div class="row">
+							<div class="col-md-6 col-md-offset-3 col-md-pull-3" data-animate-effect="fadeInLeft">
+								<span class="heading-meta">Read</span>
+								<h2 class="colorlib-heading">Recent Blog</h2>
 							</div>
 						</div>
-						{% endfor %}
-					</div>
-					<!-- <div class="row">
-						<div class="col-md-12">
-							<p><a href="{% url 'post_list' %}" class="btn btn-primary btn-lg btn-load-more">Load more <i class="icon-reload"></i></a></p>
+						<div class="row">
+							{% for blog in post %}
+							<div class="col-md-4 col-sm-6" data-animate-effect="fadeInLeft">
+								<div class="blog-entry">
+									<div class="desc">
+										<span><small>{{ blog.published_date|date:'d-m-Y'}}{% if post.is_approve %} &#x2713; {% else %} &#10007; {% endif %}</small></span>
+										<h3><a href="{% url 'post_detail' pk=blog.pk %}">{{ blog.title }}</a></h3>
+										<p>{{ blog.text|safe|truncatechars:110 }}</p>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
 						</div>
-					</div> -->
-				</div>
-			</section>
+						<!-- <div class="row">
+							<div class="col-md-12">
+								<p><a href="{% url 'post_list' %}" class="btn btn-primary btn-lg btn-load-more">Load more <i class="icon-reload"></i></a></p>
+							</div>
+						</div> -->
+					</div>
+				</section>
+			{% endif %}
 
 			<section class="colorlib-contact" data-section="contact">
 				<div class="colorlib-narrow-content">

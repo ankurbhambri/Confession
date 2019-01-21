@@ -147,7 +147,7 @@ class PostDetailView(FormMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(PostDetailView, self).get_context_data(**kwargs)
-        comments = Comment.objects.filter(blog_id=self.get_object().id)
+        comments = Comment.objects.filter(blog_id=self.get_object().id).order_by('-comment_datetime')[:5]
         context['notifications'], context['unread_count'] = recieve(self.request.user)
         # provide the columns name in values_list
         context['comments'] = comments.values_list(
@@ -278,7 +278,7 @@ class CommentReplyView(FormMixin, DetailView):
     def get_context_data(self, **kwargs):
         # print(self.pk)
         context = super(CommentReplyView, self).get_context_data(**kwargs)
-        reply = Reply.objects.filter(which_comment_id=self.get_object().id)
+        reply = Reply.objects.filter(which_comment_id=self.get_object().id).order_by('-reply_datetime')[:5]
         comment = Comment.objects.filter(id=self.get_object().id)
         context['post'] = comment.values_list(
             'blog_id__title', 'blog_id__id',)
@@ -307,59 +307,3 @@ class CommentReplyView(FormMixin, DetailView):
         reply.user = self.request.user
         form.save()
         return super(CommentReplyView, self).form_valid(form)
-
-
-# @method_decorator([login_required], name='dispatch')
-# class UserInfoView(CreateView):
-#     model = UserInfo
-#     form_class = UserInfoForm
-#     template_name = 'blog/userinfo_form.html'
-#     success_url = 'home'
-
-#     def form_valid(self, form):
-#         user_info = form.save(commit=False)
-#         user_info.user = self.request.user
-#         user_info.save()
-#         return redirect('home')
-
-
-# class UserDetailView(DetailView, FormMixin):
-#     model = UserInfo
-#     form_class = ContactForm
-#     context_object_name = 'user_info'
-#     template_name = 'blog/userdetail.html'
-
-#     def get_success_url(self):
-#         # return reverse_lazy('user_detail', kwargs={'slug': 'mashwani'})
-#         return reverse_lazy('greeting')
-
-#     def get_context_data(self, **kwargs):
-#         context = super(UserDetailView, self).get_context_data(**kwargs)
-#         username = self.kwargs['slug']
-#         context['user'] = User.objects.get(username=username)
-#         context['post'] = Post.objects.filter(
-#             owner_id=self.object.pk).order_by('-created_date')[:3]
-#         return context
-
-#     @method_decorator(login_required, name='dispatch')
-#     def post(self, request, *args, **kwargs):
-#         self.object = self.get_object()
-#         form = self.get_form()
-#         if form.is_valid():
-#             return self.form_valid(form)
-#         else:
-#             return self.form_invalid(form)
-
-#     def form_valid(self, form):
-#         name = form.cleaned_data['name']
-#         subject = form.cleaned_data['subject']
-#         from_email = form.cleaned_data['from_email'].strip()
-#         message = form.cleaned_data['message']
-#         msg = "Hi, I am %s and email: %s. \n\n\t%s" % (name, from_email, message)
-#         try:
-#             # send_mail(subject, msg, from_email, settings.EMAIL_HOST_USER)
-#             send_mail(subject, msg, settings.EMAIL_HOST_USER, ['confessionat9@gmail.com'])
-#             print("MAIL SEND SUCCESSFULLY")
-#         except Exception:
-#             print("MAIL NOT SEND")
-#         return super(UserDetailView, self).form_valid(form)
