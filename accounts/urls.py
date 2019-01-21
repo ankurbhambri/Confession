@@ -51,4 +51,24 @@ urlpatterns = [
         DeleteSkillView.as_view(),
         name="skill_delete"
     ),
+    path(
+        'qualification/edit/<int:pk>',
+        QualificationUpdateView.as_view(),
+        name="qualification_edit"
+    ),
+    path(
+        'qualification/delete/<int:pk>',
+        QualificationDeleteView.as_view(),
+        name="qualification_delete"
+    ),
+    path(
+        'experience/edit/<int:pk>',
+        ExperienceUpdateView.as_view(),
+        name="experience_edit"
+    ),
+    path(
+        'experience/delete/<int:pk>',
+        ExperienceDeleteView.as_view(),
+        name="experience_delete"
+    ),
 ]

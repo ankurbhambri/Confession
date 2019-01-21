@@ -214,3 +214,38 @@ class SkillUpdateView(UpdateView):
 #         return reverse_lazy('user_detail', kwargs={'pk': self.request.user.pk})
 
 
+@method_decorator([login_required], name='dispatch')
+class QualificationUpdateView(UpdateView):
+    model = Qualification
+    template_name = 'accounts/qualification_form.html'
+    form_class = QualificationForm
+
+    def get_success_url(self):
+        return reverse_lazy('user_detail', kwargs={'pk': self.request.user.pk})
+
+
+@method_decorator([login_required], name='dispatch')
+class QualificationDeleteView(DeleteView):
+    model = Qualification
+
+    def get_success_url(self):
+        return reverse_lazy('user_detail', kwargs={'pk': self.request.user.pk})
+
+
+@method_decorator([login_required], name='dispatch')
+class ExperienceUpdateView(UpdateView):
+    model = Experience
+    template_name = 'accounts/experience_form.html'
+    form_class = ExperienceForm
+
+    def get_success_url(self):
+        return reverse_lazy('user_detail', kwargs={'pk': self.request.user.pk})
+
+
+@method_decorator([login_required], name='dispatch')
+class ExperienceDeleteView(DeleteView):
+    model = Experience
+
+    def get_success_url(self):
+        return reverse_lazy('user_detail', kwargs={'pk': self.request.user.pk})
+

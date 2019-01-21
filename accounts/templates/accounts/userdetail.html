@@ -24,6 +24,9 @@
 
 	<link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700" rel="stylesheet">
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	
 	<link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
 	
 	<!-- Animate.css -->
@@ -46,6 +49,10 @@
 
 	<!-- Modernizr JS -->
 	<script src="{% static 'js/profile/modernizr-2.6.2.min.js' %}"></script>
+
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> -->
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 	<!-- FOR IE9 below -->
 	<!--[if lt IE 9]>
 	<script src="js/respond.min.js"></script>
@@ -279,17 +286,19 @@
 								<div class="progress-wrap">
 									<h3>
 										<form action="{% url 'skill_delete' i.pk %}" method="post">{% csrf_token %}
-							                <a onclick="this.parentNode.submit();" id="confirm-delete">{{i.skill}} <i class="icon-delete2"></i></a>
-							                <a href="{% url 'skill-update' pk=i.pk %}"><i class="icon-edit"></i></a>
+							                <!-- <a onclick="this.parentNode.submit();" id="confirm-delete">{{i.skill}} <i class="icon-delete2"></i></a> -->
+							                {{i.skill}}
+							                {% if user_auth %}
+								                <button id="confirm-delete"><i class="icon-delete2"></i></button>
+								                <a href="{% url 'skill-update' pk=i.pk %}"><i class="icon-edit"></i></a>
+								            {% endif %}
 						              	</form>
 									</h3>
 									<div class="progress">
-										{% if user_auth %}
 											<div class="progress-bar color-{{forloop.counter}}" role="progressbar" aria-valuenow="{{i.rating}}"
 									  	aria-valuemin="0" aria-valuemax="100" style="width:{{i.rating}}%">
 									    	<span>{{i.rating}}%</span>							              	
 									  	</div>
-										{% endif %}
 									 	
 									</div>
 								</div>
@@ -315,13 +324,26 @@
 									<div class="panel panel-default">
 									    <div class="panel-heading" role="tab" id="heading{{count}}">
 									        <h4 class="panel-title">
-									            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{count}}" aria-expanded="false" aria-controls="collapse{{count}}">{{value.specialization}} | {{ value.grade }} | {{ value.from_year }} - {{ value.completion_year }} 
+									            <a class="collapsed"
+									               data-toggle="collapse"
+									               data-parent="#accordion"
+									               href="#collapse{{count}}"
+									               aria-expanded="false"
+									               aria-controls="collapse{{count}}"
+									               data-html="true"
+									               >{{value.specialization}} | {{ value.grade }} | {{ value.from_year }} - {{ value.completion_year }} 
 									            </a>
 									        </h4>
 									    </div>
 									    <div id="collapse{{count}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{count}}">
 									        <div class="panel-body">
-									            {{ value.achievement }}
+									            {{ value.achievement.strip|safe }}
+									            {% if user_auth %}
+									            <form action="{% url 'qualification_delete' value.id %}" method="post">{% csrf_token %}
+									            	<a href="{% url 'qualification_edit' pk=value.id %}"><i class='icon-pen2'></i></a>
+										            <button id="confirm-delete"><i class="icon-delete2"></i></button>
+								              	</form>
+								              	{% endif %}
 									        </div>
 									    </div>
 									</div>
@@ -349,11 +371,22 @@
 						            <div class="timeline-entry-inner">
 
 						               <div class="timeline-icon color-{{forloop.counter}}">
-						                  <i class="icon-pen2"></i>
+						                  <i class="icon-anchor"></i>
 						               </div>
 
 						               <div class="timeline-label">
-						                  <h2><a href="#">{{ exp.designation }}</a> <span>{{ exp.start_month }} {{ exp.start_year }} - {% if exp.end_month %} {{ exp.end_month }} {{ exp.completion_year }} {% elif exp.present_working %} present {% endif %}</span></h2>
+						                  <h2>
+						                  	<a>{{ exp.designation }}</a>
+						                  	<span>
+						                  		{{ exp.start_month }} {{ exp.start_year }} - {% if exp.end_month %} {{ exp.end_month }} {{ exp.completion_year }} {% elif exp.present_working %} present {% endif %}
+						                  	</span>
+						                  </h2>
+						                  {% if user_auth %}
+							                  <form class="experience" action="{% url 'experience_delete' exp.id %}" method="post">{% csrf_token %}
+								            	<a href="{% url 'experience_edit' pk=exp.pk %}"><i class='icon-pen2'></i></a>
+									            <button id="confirm-delete"><i class="icon-delete2"></i></button>
+							              	  </form>
+							              {% endif %}
 						                  <p>{{ exp.description }}</p>
 						               </div>
 						            </div>
@@ -587,6 +620,7 @@
 	
 	<!-- MAIN JS -->
 	<script src="{% static 'js/profile/main.js' %}"></script>
+	<script src="{% static 'js/profile/custom.js' %}"></script>
 
 	<script type="text/javascript">
         $(document).on('click', '#confirm-delete', function(){

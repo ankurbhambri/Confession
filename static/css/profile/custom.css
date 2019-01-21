@@ -12,4 +12,17 @@
 
 #confirm-delete {
 	color: black;
+	border: none;
+	padding-right: 10px;
+    padding-left: 10px;
+	background: none;
+}
+
+.check {
+	background: #256a71;
+}
+
+.experience {
+	margin-left: 625px;
+    margin-top: -54px;
 }
