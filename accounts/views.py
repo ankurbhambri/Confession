@@ -125,12 +125,6 @@ class ExperienceView(CreateView):
             comment.save()
             return HttpResponseRedirect(reverse_lazy(self.success_url, kwargs={'slug': self.kwargs['slug']}))
 
-    # def save_form(self, form):
-    #     comment = form.save(commit=False)
-    #     comment.blog = self.get_object()
-    #     comment.user = self.request.user
-    #     form.save()
-
 
 # @method_decorator([login_required], name='dispatch')
 class UserDetailView(DetailView, FormMixin):
