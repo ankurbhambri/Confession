@@ -101,7 +101,7 @@ div.login-btn {
 }
 
 div.post-edit {
-  padding-left: 12px;
+  padding-left: 150px;
   font-size: 14px;
 }
 
@@ -281,3 +281,24 @@ input#id_skill, input#id_rating {
     margin-top: -76px;    
 }
 
+#post-save {
+    width: 250px;
+    margin-left: 400px;
+    margin-top: 16px;    
+}
+
+.site-btn {
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 12px;
+  min-width: 114px;
+  min-height: 0px;
+  text-align: center;
+  padding: 10px 10px 9px;
+  position: relative;
+  background-color: #fff;
+  margin-right: 10px;
+  border: 2px solid #40424a;
+  color: #40424a;
+  font-weight: 700;
+}

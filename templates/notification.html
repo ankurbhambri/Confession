@@ -5,7 +5,7 @@
 $(document).ready(function(){
     $("#dropdownMenu1").click(function(){
         $.ajax({url: "{% url 'notify-status' %}", success: function(result){
-            document.getElementById("notify-count").innerHTML = 0;
+            document.getElementById("notify-count").innerHTML = '';
         }});
     });
 });
@@ -16,13 +16,11 @@ $(document).ready(function(){
     <a href="" onclick="return false;" role="button" data-toggle="dropdown" id="dropdownMenu1" data-target="home" style="float: left" aria-expanded="true">
         <i class="fa fa-bell" style="font-size: 20px; float: left; color: black"></i>
     </a>
-    <span id="notify-count" class="badge badge-danger">
         {% if unread_count %}
-            {{ unread_count }}
+            <span id="notify-count" class="badge badge-danger">{{ unread_count }}</span>
         {% else %}
-            0
+            <span id="notify-count" class="badge badge-danger"></span>
         {% endif %}
-    </span>
     <ul class="dropdown-menu dropdown-menu-left pull-right" role="menu" aria-labelledby="dropdownMenu1">
         <li role="presentation">
             <a href="#" class="dropdown-menu-header">Notifications</a>

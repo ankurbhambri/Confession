@@ -10,7 +10,7 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto" id="post-detail">
           <h1 class="title">{{ post.title|title }}</h1>
-          <p class="post-metaa"> Posted by <a class="author-name">{{ post.owner|title }}</a> on {{ post.published_date|date:'d-m-Y' }}{% if post.is_approve %} &#x2713; {% else %} &#10007; {% endif %} 
+          <p class="post-metaa"> Posted by <a class="author-name" href="{% url 'user_detail' pk=user.pk %}">{{ post.owner|title }}</a> on {{ post.published_date|date:'d-m-Y' }}{% if post.is_approve %} &#x2713; {% else %} &#10007; {% endif %} 
             {% if post.owner == user %}
               <a id='edit-post' href="{% url 'post_update' pk=post.pk %}"><i class="fas fa-pencil-alt"></i></a>
               <form action="{% url 'post_delete' post.pk %}" method="post">{% csrf_token %}
@@ -28,7 +28,7 @@
   <hr>
 
   <div class="comment">
-    <h1 class="title">Comments</h1>
+    <h1 class="title">Comment</h1>
     <form method="POST" class="form-comment" id="form-comment" data-validate-url='/post/{{post.id}}' data-validate-username='{{ user.username|title }}' >
         {% csrf_token %}  
         <div class="block-streamText"">
@@ -47,7 +47,7 @@
           <div class="panel panel-default arrow left">
             <div class="panel-body">
               <div class="comment-user"><i class="fa fa-user"></i> {{ comment.0|title }}
-                <a class="text-right" href="{% url 'comment_reply' pk=comment.2 %}"><i class="fa fa-reply"></i> reply</a>
+                <a class="text-right" href="{% url 'comment_reply' pk=comment.2 %}"><i class="fa fa-reply"></i>Reply</a>
               </div>
               <div class="comment-post">
                 <p>

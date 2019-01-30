@@ -156,7 +156,7 @@ CKEDITOR_UPLOAD_PATH = 'uploads/'
 
 CKEDITOR_CONFIGS = {
     'default': {
-        'skin': 'moono',
+        'skin': 'moono-lisa',
         # 'skin': 'office2013',
         'toolbar_Basic': [
             ['Source', '-', 'Bold', 'Italic']
@@ -207,13 +207,14 @@ CKEDITOR_CONFIGS = {
                 'name': 'links',
                 'items': ['Link', 'Unlink', 'Anchor']
             },
-            
             '/',
             {'name': 'codesnippet', 'items': ['CodeSnippet']},
+            '/',
+            {'name': 'markdown', 'items': ['Markdown']},
             {'name': 'yourcustomtools', 'items': [
                 # put the name of your editor.ui.addButton here
                 'Preview',
-                'Maximize',
+                'Maximize'
 
             ]},
         ],
@@ -229,6 +230,7 @@ CKEDITOR_CONFIGS = {
             # 'autogrow',
             # 'devtools',
             'codesnippet',
+            'markdown',
             # 'widget',
             # 'lineutils',
             # 'clipboard',
@@ -237,7 +239,7 @@ CKEDITOR_CONFIGS = {
             # 'elementspath'
         ]),
         'height': 600,
-        'width': 1300,
+        'width': 1000,
     }
 }
 CKEDITOR_BROWSE_SHOW_DIRS = False

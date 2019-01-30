@@ -137,7 +137,7 @@ class PostDetailView(viewsets.ModelViewSet):
 
     def update(self, request, pk=None):
         '''
-        Update the updated blog.
+        Update the blog.
 
             Method: PUT
             Args:

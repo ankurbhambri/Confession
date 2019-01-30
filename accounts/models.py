@@ -91,4 +91,4 @@ class Experience(models.Model):
     end_month = models.CharField(max_length=255, choices=MONTH, blank=True, null=True)
     completion_year = models.IntegerField(('year'), choices=YEAR_CHOICES, blank=True, null=True)
     present_working = models.BooleanField(default=False)
-    description = models.CharField(max_length=1000)
+    description = models.TextField(blank=True)

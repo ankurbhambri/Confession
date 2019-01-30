@@ -5,7 +5,7 @@ from .views import *
 
 
 urlpatterns = [
-    # path('api/', include('blog.apis.urls')),
+    path('api/', include('accounts.apis.urls')),
     path(
         'user-info/',
         UserInfoView.as_view(),
@@ -15,6 +15,11 @@ urlpatterns = [
         'user-detail/<int:pk>',
         UserDetailView.as_view(),
         name="user_detail"
+    ),
+    url(
+        r'user-detail/(?P<slug>[\w.@+-]+)/$',
+        UserDetailView.as_view(),
+        name='user-detail'
     ),
     url(
         r'user-update/(?P<slug>[\w.@+-]+)/$',

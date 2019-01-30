@@ -14,7 +14,7 @@
                         {{ post.text|safe|truncatechars:56 }}
                       </p> -->
                     </a>
-                    <p class="post-meta"> Posted by <a>{{ post.owner|title }}</a> on {{ post.published_date|date:'d-m-Y' }}{% if post.is_approve %} &#x2713; {% else %} &#10007; {% endif %}</p>
+                    <p class="post-meta"> Posted by <a href="{% url 'user_detail' pk=user.pk %}">{{ post.owner|title }}</a> on {{ post.published_date|date:'d-m-Y' }}{% if post.is_approve %} &#x2713; {% else %} &#10007; {% endif %}</p>
                   </div>
                   <hr>
                 {% endfor %}

@@ -1,5 +1,6 @@
-# Multi user Blog Approval Application
+# CONFESSION
 
+Confession is a multi-user blogging application.
 There are three type of user how can use this application, Editor, Chief and anonymous. Anonymous can read only those blogs which is approved by chief.
 This project also contains API's with all the functionalities.
 
@@ -8,7 +9,8 @@ This project also contains API's with all the functionalities.
     - Anonymous: Only read approved blogs.
 #### Features
 - Any registered user can write blog, comment and reply on approved blogs.
-- Notification system
+- Custom notification system
+- Custom comment-reply system
 ### Quick Setup
 - Create a vitual environment.
   - `virtualenv -p python3.6 venv`

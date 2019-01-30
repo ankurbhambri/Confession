@@ -31,6 +31,11 @@
                     {% endif %}
                   </a>
               </li>
+              <li>
+                <div class="col-md-8 text-md-right header-buttons">
+                  <a href="{% url 'user_detail' pk=user.pk %}" class="site-btn">Discover Me</a>
+              </div>
+              </li>
             </ul>
             {% block notification %}
               {% include 'notification.html' %}
@@ -50,9 +55,19 @@
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'chief_signup' %}">Sign up as Moderator</a>
               </li>
+              <li>
+                {% if user.slug %}
+                  <div class="col-md-8 text-md-right header-buttons">
+                    <a href="{% url 'user_detail' slug=user.slug %}" class="site-btn">Discover Developer</a>
+                  </div>
+                {% else %}
+                  <div class="col-md-8 text-md-right header-buttons">
+                    <a href="/user/user-detail/mashwani" class="site-btn">Discover Developer</a>
+                  </div>
+                {% endif %}
+              </li>
             </ul>
           </div>
-        </div>
       </nav>
     {% endif %}
     <br>

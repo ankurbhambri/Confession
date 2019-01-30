@@ -23,6 +23,12 @@ from blog.models import User
 
 @method_decorator([login_required], name='dispatch')
 class UserInfoView(CreateView):
+    '''
+    View to create User profile.
+    View used to get only very basic information from user like;
+    profile pic, name, title, and about me.
+
+    '''
     model = UserInfo
     form_class = UserInfoForm
     template_name = 'accounts/userinfo_form.html'
@@ -138,7 +144,6 @@ class UserDetailView(DetailView, FormMixin):
         return reverse_lazy('greeting')
 
     def get_context_data(self, **kwargs):
-        print(self.request.user.is_authenticated)
         context = super(UserDetailView, self).get_context_data(**kwargs)
         context['user_auth'] = self.request.user.is_authenticated
         context['user'] = User.objects.get(pk=self.object.pk)

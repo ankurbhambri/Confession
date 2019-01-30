@@ -2,12 +2,12 @@
 {% load static %}
 
 {% block content %}
-    {% if post.owner == user %}
-        <h3>Edit Post</h3>
-    {% elif not post.owner%}
-        <h1>New post</h1>
-    {% endif %}
     <div class="post-edit">
+        {% if post.owner == user %}
+            <h3>Edit Post</h3>
+        {% elif not post.owner%}
+            <h1>Title: </h1>
+        {% endif %}
         <form method="POST" class="post-form">
             {% csrf_token %}
             {% for field in form %}
@@ -17,7 +17,7 @@
                 {{ field }}
                 <br/>
             {% endfor %}
-            <button type="submit" class="save btn btn-default">Save</button>
+            <button type="submit" class="btn btn-primary" id="post-save" name="submit">Submit</button>
         </form>
     </div>
 {% endblock %}
