@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator, UniqueValidator
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 
@@ -18,13 +19,13 @@ class TokenSerializer(serializers.Serializer):
     success = serializers.BooleanField(default=False)
 
 
-class SkillSerializer(serializers.Serializer):
+class SkillSerializer(serializers.ModelSerializer):
     """
     This serializer serializes the skill model
-    """
+    # """
     user_id = serializers.ModelField(
         model_field=User()._meta.get_field('id'),
-        read_only=True
+        required=False
     )
     skill = serializers.CharField(
         allow_blank=False,
@@ -37,10 +38,29 @@ class SkillSerializer(serializers.Serializer):
     )
 
     def create(self, validated_data):
-        print(validated_data)
         skill = SkillSet.objects.create(**validated_data)
         return skill
 
     class Meta:
         model = SkillSet
-        fields = ('user', 'skill', 'rating')
+        fields = ('skill', 'rating', 'user_id')
+
+        validators = [
+            UniqueTogetherValidator(
+                queryset=SkillSet.objects.all(),
+                fields=('skill', 'user_id')
+            )
+        ]
+
+
+class QualificationSerializer(serializers.ModelSerializer):
+    """
+    This serializer serializes the qualification model
+    """
+    def create(self, validated_data):
+        qualification = Qualification.objects.create(**validated_data)
+        return qualification
+
+    class Meta:
+        model = Qualification
+        fields = '__all__'

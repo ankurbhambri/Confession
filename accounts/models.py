@@ -61,6 +61,9 @@ class SkillSet(models.Model):
         default=0
     )
 
+    class Meta:
+        unique_together = (('skill', 'user'),)
+
 
 class Qualification(models.Model):
     user = models.ForeignKey(

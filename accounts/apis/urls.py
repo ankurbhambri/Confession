@@ -5,10 +5,19 @@ from rest_framework.documentation import include_docs_urls
 from .user_profile import (
     CreateUserProfileView,
     SkillView,
+    QualificationView,
 )
 
 
+skill = SkillView.as_view({
+    'get': 'retrieve',
+    'post': 'create'
+})
 
+qualification = QualificationView.as_view({
+    'get': 'retrieve',
+    'post': 'create'
+})
 # post_detail = PostDetailView.as_view({
 #     'get': 'retrieve',
 #     'put': 'update',
@@ -29,7 +38,8 @@ urlpatterns = [
     #     title='Blogs API Docs'
     # )),
     path('user-profile', CreateUserProfileView.as_view({'post': 'update'}), name='api-userprofile'),
-    path('skill', SkillView.as_view({'post': 'create'}), name='api-skill'),
+    path('skill', skill, name='api-skill'),
+    path('qualification', qualification, name='api-qualification'),
     # path('login', LoginView.as_view({'post': 'create'}), name='api-login'),
 
     # path('blogs', HomeView.as_view({'get': 'list'}), name='api-home'),
