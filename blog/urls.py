@@ -37,7 +37,7 @@ urlpatterns = [
         name="home"
     ),
     path(
-        'post-approval-list/<int:pk>',
+        'post-approve/<int:pk>',
         PostApprovalView.as_view(),
         name='post_approve'
     ),

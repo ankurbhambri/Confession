@@ -302,3 +302,9 @@ input#id_skill, input#id_rating {
   color: #40424a;
   font-weight: 700;
 }
+
+
+a.active {
+    /* color: #0085a1; */
+    background-color: #0085a1;
+}

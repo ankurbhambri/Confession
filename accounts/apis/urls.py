@@ -6,18 +6,26 @@ from .user_profile import (
     CreateUserProfileView,
     SkillView,
     QualificationView,
+    ExperienceView,
 )
 
 
 skill = SkillView.as_view({
     'get': 'retrieve',
-    'post': 'create'
+    'post': 'create',
+    'put': 'update',
 })
 
 qualification = QualificationView.as_view({
     'get': 'retrieve',
     'post': 'create'
 })
+
+experience = ExperienceView.as_view({
+    'get': 'retrieve',
+    'post': 'create'
+})
+
 # post_detail = PostDetailView.as_view({
 #     'get': 'retrieve',
 #     'put': 'update',
@@ -40,6 +48,7 @@ urlpatterns = [
     path('user-profile', CreateUserProfileView.as_view({'post': 'update'}), name='api-userprofile'),
     path('skill', skill, name='api-skill'),
     path('qualification', qualification, name='api-qualification'),
+    path('experience/<int:pk>', experience, name='api-experience'),
     # path('login', LoginView.as_view({'post': 'create'}), name='api-login'),
 
     # path('blogs', HomeView.as_view({'get': 'list'}), name='api-home'),

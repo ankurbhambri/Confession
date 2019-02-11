@@ -2,21 +2,37 @@
 
 {% block content %}
 
-    <div class="post">
-        <h1 class="title" align="center">{{ post.title }}</h1>
-        <p>Published on: {{ post.published_date }}
-            {% if post.is_approve %} &#x2713; {% endif %}
-        </p>
-        {% if user.is_authenticated %}
-            <p>{{ post.owner|title }}</p>
-        {% endif %}
-        <p>{{ post.text|safe }}</p>
-        <form method="POST" class="post-form">
+    <article>
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto" id="post-detail">
+              <h1 class="title">{{ post.title|title }}</h1>
+              <p class="post-metaa"> Posted by <a class="author-name" href="{% url 'user_detail' pk=user.pk %}">{{ post.owner|title }}</a> on {{ post.published_date|date:'d-m-Y' }}{% if post.is_approve %} &#x2713; {% else %} &#10007; {% endif %} 
+                {% if post.owner == user %}
+                  <a id='edit-post' href="{% url 'post_update' pk=post.pk %}"><i class="fas fa-pencil-alt"></i></a>
+                  <form action="{% url 'post_delete' post.pk %}" method="post">{% csrf_token %}
+                    <button id="confirm-delete">
+                      <i class="far fa-trash-alt"></i>
+                    </button>
+                  </form>
+                {% endif %}
+              </p>
+              {{ post.text|safe }}
+            </div>
+          </div>
+          <form action="{% url 'post_approve' post.pk %}" method="post">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="save btn btn-default">Save</button>
-        </form>
-    </div>
+            {% if not post.is_approve %}
+              <input hidden type="checkbox" name="is_approve" id="id_is_approve" checked>
+              <button type="submit" class="btn btn-primary" id="post-save" name="submit">Approve</button>
+              <!-- <button value="true" id="approve">Approve</button> -->
+            {% else %}
+              <input hidden type="checkbox" name="is_approve" id="id_is_approve" unchecked>
+              <!-- <button value="false" id="approve">Unapprove</button> -->
+              <button type="submit" class="btn btn-primary" id="post-save" name="submit">Unapprove</button>
+            {% endif %}
+           </form>
+        </div>
+      </article>
+
 {% endblock %}
-
-

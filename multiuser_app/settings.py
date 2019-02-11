@@ -164,7 +164,7 @@ CKEDITOR_CONFIGS = {
         'toolbar_YourCustomToolbarConfig': [
             {
                 'name': 'document',
-                'items': ['Save', 'Preview', 'Print', '-', 'Templates']
+                'items': ['Source', '-', 'Save', 'Preview', 'Print', '-', 'Templates']
             },
             {
                 'name': 'clipboard',
@@ -191,7 +191,7 @@ CKEDITOR_CONFIGS = {
             {
                 'name': 'basicstyles',
                 'items': ['Bold', 'Italic', 'Underline', 'Strike',
-                          'Subscript', 'Superscript', '-', 'RemoveFormat'
+                          'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat'
                           ]
             },
             {
@@ -208,9 +208,9 @@ CKEDITOR_CONFIGS = {
                 'items': ['Link', 'Unlink', 'Anchor']
             },
             '/',
+            {'name': 'styles', 'items': [ 'Styles', 'Format', 'Font', 'FontSize' ]},
             {'name': 'codesnippet', 'items': ['CodeSnippet']},
-            '/',
-            {'name': 'markdown', 'items': ['Markdown']},
+            # {'name': 'markdown', 'items': ['Markdown']},
             {'name': 'yourcustomtools', 'items': [
                 # put the name of your editor.ui.addButton here
                 'Preview',
@@ -230,7 +230,7 @@ CKEDITOR_CONFIGS = {
             # 'autogrow',
             # 'devtools',
             'codesnippet',
-            'markdown',
+            # 'markdown',
             # 'widget',
             # 'lineutils',
             # 'clipboard',
@@ -253,6 +253,7 @@ LOGOUT_REDIRECT_URL = 'home'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',

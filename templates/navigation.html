@@ -10,21 +10,21 @@
           <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'post_list' %}">My Blogs</a>
+                <a  href="{% url 'post_list' %}">My Blogs</a>
               </li>
               {% if user.is_chief %}
                 <li class="nav-item">
-                  <a class="nav-link"href="{% url 'post_approve_list' %}">Blogs to Approve</a>
+                  <a href="{% url 'post_approve_list' %}">Blogs to Approve</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'user_approved' %}">Blogs I Approved</a>
+                  <a  href="{% url 'user_approved' %}">Blogs I Approved</a>
                 </li>
               {% endif %}
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Log out</a>
+                <a  href="{% url 'logout' %}">Log out</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="username" href="{% url 'user_detail' pk=user.pk %}" >
+                <a  id="username" href="{% url 'user_detail' pk=user.pk %}" >
                     {{ user|title }}
                     {% if user.is_chief %}
                       <i class="fas fa-crown"></i>
@@ -47,13 +47,13 @@
           <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'login' %}">LogIn</a>
+                <a  href="{% url 'login' %}">LogIn</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'editor_signup' %}">Sign up as Editor</a>
+                <a  href="{% url 'editor_signup' %}">Sign up as Editor</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'chief_signup' %}">Sign up as Moderator</a>
+                <a  href="{% url 'chief_signup' %}">Sign up as Moderator</a>
               </li>
               <li>
                 {% if user.slug %}

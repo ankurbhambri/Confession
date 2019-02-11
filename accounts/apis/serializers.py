@@ -25,7 +25,8 @@ class SkillSerializer(serializers.ModelSerializer):
     # """
     user_id = serializers.ModelField(
         model_field=User()._meta.get_field('id'),
-        required=False
+        required=False,
+        help_text="User id (optional)"
     )
     skill = serializers.CharField(
         allow_blank=False,
@@ -33,24 +34,32 @@ class SkillSerializer(serializers.ModelSerializer):
         help_text="String value"
     )
     rating = serializers.IntegerField(
-        default=0,
-        validators=[MaxValueValidator(100), MinValueValidator(1)]
+        required=True,
+        validators=[MaxValueValidator(100), MinValueValidator(1)],
+        help_text='rating from 0 to 100'
     )
 
     def create(self, validated_data):
         skill = SkillSet.objects.create(**validated_data)
         return skill
 
+    def update(self, instance, validated_data):
+        instance.user_id = validated_data.get('user_id', instance.user_id)
+        instance.skill = validated_data.get('skill', instance.skill)
+        instance.rating = validated_data.get('rating', instance.rating)
+        instance.save()
+        return instance
+
     class Meta:
         model = SkillSet
         fields = ('skill', 'rating', 'user_id')
 
-        validators = [
-            UniqueTogetherValidator(
-                queryset=SkillSet.objects.all(),
-                fields=('skill', 'user_id')
-            )
-        ]
+        # validators = [
+        #     UniqueTogetherValidator(
+        #         queryset=SkillSet.objects.all(),
+        #         fields=('skill', 'user_id')
+        #     )
+        # ]
 
 
 class QualificationSerializer(serializers.ModelSerializer):
@@ -63,4 +72,17 @@ class QualificationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Qualification
+        fields = '__all__'
+
+
+class ExperienceSerializer(serializers.ModelSerializer):
+    """
+    This serializer serializes the experience model
+    """
+    def create(self, validated_data):
+        experience = Experience.objects.create(**validated_data)
+        return experience
+
+    class Meta:
+        model = Experience
         fields = '__all__'

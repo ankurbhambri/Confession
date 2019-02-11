@@ -6,7 +6,7 @@
             <div class="col-lg-8 col-md-10 mx-auto">
                 {% for post in postApprove %}
                   <div class="post-preview" id="post-detail">
-                    <a href="{% url 'post_detail' pk=post.pk %}">
+                    <a href="{% url 'post_approve' pk=post.pk %}">
                       <h2 class="post-title">
                         {{ post.title|title }}
                       </h2>
