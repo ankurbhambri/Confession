@@ -14,10 +14,10 @@
               </li>
               {% if user.is_chief %}
                 <li class="nav-item">
-                  <a href="{% url 'post_approve_list' %}">Blogs to Approve</a>
+                  <a href="{% url 'post_approve_list' %}">Need Approval</a>
                 </li>
                 <li class="nav-item">
-                  <a  href="{% url 'user_approved' %}">Blogs I Approved</a>
+                  <a  href="{% url 'user_approved' %}">I Approved</a>
                 </li>
               {% endif %}
               <li class="nav-item">

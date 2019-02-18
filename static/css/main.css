@@ -9,6 +9,16 @@ h1.title, h2.title {
     color: #009688;
 }
 
+footer {
+  /* position: absolute; */
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  /* background-color: red; */
+  color: white;
+  text-align: center;
+}
+
 *{padding:0;margin:0;}
 
 .float{
@@ -236,6 +246,32 @@ button:hover {
   height: 150px;
 }
 
+@media only screen and (max-width:768px) {
+  .comment {
+    padding-left: 20px;
+    padding-right: 600px;
+  } 
+
+  #id_comment, #id_reply {
+    width: 300px;
+    height: 90px;
+  }
+
+  .float{
+    position:fixed;
+    width:60px;
+    height:60px;
+    bottom:40px;
+    right:275px;
+    background-color:#0085a1;
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
+    box-shadow: 2px 2px 3px #999;
+  }
+}
+
+
 .btn-primary {
     width: 160px; 
 }
@@ -291,20 +327,20 @@ input#id_skill, input#id_rating {
   display: inline-block;
   text-transform: uppercase;
   font-size: 12px;
-  min-width: 114px;
+  min-width: 170px;
   min-height: 0px;
   text-align: center;
   padding: 10px 10px 9px;
   position: relative;
   background-color: #fff;
   margin-right: 10px;
-  border: 2px solid #40424a;
+  border: 2px solid #30BFBF;
   color: #40424a;
   font-weight: 700;
 }
 
 
 a.active {
-    /* color: #0085a1; */
-    background-color: #0085a1;
+    color: #30BFBF; 
+    background-color: #30BFBF;
 }
